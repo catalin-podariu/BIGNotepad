@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://www.netbeans.org/ns/project/1">
+    <type>org.netbeans.modules.java.j2seproject</type>
+    <configuration>
+        <data xmlns="http://www.netbeans.org/ns/j2se-project/3">
+            <name>TextEditor</name>
+            <source-roots>
+                <root id="src.dir"/>
+            </source-roots>
+            <test-roots>
+                <root id="test.src.dir"/>
+            </test-roots>
+        </data>
+        <spellchecker-wordlist xmlns="http://www.netbeans.org/ns/spellchecker-wordlist/1">
+            <word>Config</word>
+            <word>exe</word>
+            <word>htm</word>
+            <word>http</word>
+            <word>javax</word>
+            <word>jpg</word>
+            <word>lang</word>
+            <word>Lapitsky</word>
+            <word>Linux</word>
+            <word>margin'</word>
+            <word>Mattocks</word>
+            <word>Mb</word>
+            <word>nio</word>
+            <word>php</word>
+            <word>px</word>
+            <word>regex</word>
+            <word>Stanislav</word>
+            <word>uri</word>
+            <word>wordpress</word>
+        </spellchecker-wordlist>
+    </configuration>
+</project>
