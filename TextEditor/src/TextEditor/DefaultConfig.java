@@ -58,8 +58,6 @@ public class DefaultConfig extends BIGNotepad {
         Task t = new Task(pad);
         t.execute();
         
-        SetBigIcons sbi;
-
         // load user defined settings or go to default if not found
         // it will also valueOf a fresh copy in current folder
         Config cfg = new Config(pad.defaultTempFolder);

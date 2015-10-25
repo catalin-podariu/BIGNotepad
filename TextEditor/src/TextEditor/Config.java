@@ -99,10 +99,10 @@ public class Config {
             int status = failSafe();
             // return 0 means new properties file was copied successfully 
             if (status == -1) {
-//                JOptionPane.showConfirmDialog(null,
-//                        "Properties were NOT loaded..",
-//                        "BIGNotepad message",
-//                        JOptionPane.PLAIN_MESSAGE);
+                JOptionPane.showConfirmDialog(null,
+                        "Properties were NOT loaded..",
+                        "BIGNotepad message",
+                        JOptionPane.PLAIN_MESSAGE);
             }
             // call get again to return proper values
             get(type);
@@ -228,9 +228,7 @@ public class Config {
                 properties.load(fileInput);
             }
         } catch (IOException ex) {
-            // feedback to the user
-            JOptionPane.showConfirmDialog(null, ex, "BIGNotepad message",
-                    JOptionPane.PLAIN_MESSAGE);
+            System.err.println(ex);
         }
 
         // fail-safe in the situation when settings were placed at first
@@ -238,9 +236,6 @@ public class Config {
         if (properties.size() == 0) {
             // if user settings not present place a fresh copy from default
             failSafe();
-            JOptionPane.showConfirmDialog(null, "Properties size == 0",
-                    "BIGNotepad message",
-                    JOptionPane.PLAIN_MESSAGE);
         } else {
             File userSettings = new File(userDefinedSettings);
             try (FileOutputStream newProperties = new FileOutputStream(userSettings)) {
