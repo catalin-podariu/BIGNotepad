@@ -11,11 +11,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import java.util.Properties;
 import javax.swing.JOptionPane;
 
@@ -25,35 +20,24 @@ import javax.swing.JOptionPane;
  */
 public class Config {
 
-    private final Properties properties;
-    private InputStream resourceInputStream;
-    private FileInputStream userFileInputStream;
+    private String defaultSettings;
+    private String aboutInfo;
 
-    // default properties IDE
-    private final String defaultJARSettings = "/Resources/InternalSettings.properties";
-    // default properties JAR
-    private final String defaultIDESettings = "\\Resources\\InternalSettings.properties";
+    private String userDefinedSettings;
 
-    // text for "about", "license" and "thanks"
-    private final String aboutInfo = "/Resources/AboutInfo.properties";
-
-    // user defined properties stored in installation folder
-    //                         TO BE UPDATED 
-    private String userDefinedSettings = "C:\\InternalSettings";
-
-    public Config() {
-        this.properties = new Properties();
-    }
+    // settings
+    private Properties properties;
 
     /**
-     * Used to change install path.
-     * <br>
+     * Config constructor.
      *
-     * @param userSettings defines new path for user properties folder
+     * @param userDefinedSettings default folder where to store settings.
      */
-    public Config(String userSettings) {
+    public Config(String userDefinedSettings) {
         this.properties = new Properties();
-        this.userDefinedSettings = userSettings;
+        this.userDefinedSettings = userDefinedSettings;
+        this.defaultSettings = "/Resources/InternalSettings.properties";
+        this.aboutInfo = "/Resources/AboutInfo.properties";
     }
 
     /**
@@ -76,63 +60,87 @@ public class Config {
      * of the 10 most recent searches/replaces.<br>
      * <br>
      *
-     * @param type e.g. "WindowSettings"
+     * @param type eg. "WindowSettings"
      * @return actually returns what "loadDefaultSettings" gives it that being
      * an Object array with requested properties.
      */
-    public Object[] get(String type) {
-        try (FileInputStream is = new FileInputStream(userDefinedSettings)) {
-            if (is != null) {
-                properties.load(is);
+    protected Object[] get(String type) {
+        // test to see if file is present
+        File file = new File(userDefinedSettings);
+        if (file.exists()) {
+            //load userDefinedSettings to FileInputStream
+            try (FileInputStream fileInput = new FileInputStream(userDefinedSettings)) {
+                if (fileInput != null) {
+                    properties.load(fileInput);
+                }
+                // safe to call again 'get' recursively
+                if (fileInput == null) {
+
+                    // FAIL-SAFE - if the settings were not found, copy new defaults
+                    int status = failSafe();
+
+                    // return 0 means new properties file was copied successfully 
+                    if (status == -1) {
+                        JOptionPane.showConfirmDialog(null,
+                                "Properties were NOT loaded..",
+                                "BIGNotepad message",
+                                JOptionPane.PLAIN_MESSAGE);
+                    }
+                    // call get again to return proper values
+                    get(type);
+                }
+
+            } catch (IOException ex) {
+                System.err.println(ex);
             }
-            userFileInputStream = is;
-        } catch (FileNotFoundException ex) {
-            System.err.println("Config.get: " + ex);
+            // file turns out it wasn't present
+        } else {
             // FAIL-SAFE - if the settings were not found, copy new defaults
             int status = failSafe();
-            if (status == 0) {
-                JOptionPane.showConfirmDialog(null,
-                        "Your preferences were not found..\n"
-                        + "A fresh copy of default settings is now available at\n"
-                        + userDefinedSettings, "BIGNotepad message",
-                        JOptionPane.PLAIN_MESSAGE);
-            } else if (status == -1) {
-                JOptionPane.showConfirmDialog(null, ex, "BIGNotepad message",
-                        JOptionPane.PLAIN_MESSAGE);
+            // return 0 means new properties file was copied successfully 
+            if (status == -1) {
+//                JOptionPane.showConfirmDialog(null,
+//                        "Properties were NOT loaded..",
+//                        "BIGNotepad message",
+//                        JOptionPane.PLAIN_MESSAGE);
             }
-        } catch (IOException ex) {
-            JOptionPane.showConfirmDialog(null, ex, "BIGNotepad message",
-                    JOptionPane.PLAIN_MESSAGE);
-            System.err.println("Config.get: " + ex);
-        }
-
-        // safe to call again 'get' recursively
-        if (userFileInputStream != null) {
             // call get again to return proper values
             get(type);
         }
 
         // check to see if any of the properties were loaded
         if (properties.size() != 0) {
-            return loadDefaultSettings(type);
+            Object[] status = getDefaultSettings(type);
+            if (status != null) {
+                // return requested properties
+                return status;
+            }
         } else {
-            JOptionPane.showConfirmDialog(null, "Properties were NOT loaded..",
-                    "BIGNotepad message",
-                    JOptionPane.PLAIN_MESSAGE);
-            return null;
+//            JOptionPane.showConfirmDialog(null,
+//                    "Properties were NOT loaded..",
+//                    "BIGNotepad message",
+//                    JOptionPane.PLAIN_MESSAGE);
+            int status = failSafe();
+            // return 0 means new properties file was copied successfully 
+            if (status == -1) {
+//                JOptionPane.showConfirmDialog(null,
+//                        "Properties were NOT loaded..",
+//                        "BIGNotepad message",
+//                        JOptionPane.PLAIN_MESSAGE);
+            }
         }
-
+        return null;
     }
 
     /**
      * Load default settings.
      * <br>
+     * Does not need to check anything, because get method did that before!
      *
      * @param type e.g. "WindowSettings"
      * @return an Object array containing requested properties
      */
-    private Object[] loadDefaultSettings(String type) {
-
+    private Object[] getDefaultSettings(String type) {
         Object[] props = null;
         switch (type) {
             case "WindowSettings":
@@ -199,7 +207,6 @@ public class Config {
                 break;
         }
         return props;
-
     }
 
     /**
@@ -213,28 +220,30 @@ public class Config {
      * only has value and the key is "file0" incremented by the number of items.
      * @return 0 for OK, 1 for failure and -1 for IOException
      */
-    public int set(String[] props, String mode) {
-        try {
-            userFileInputStream = new FileInputStream(userDefinedSettings);
-            if (userFileInputStream != null) {
-                properties.load(userFileInputStream);
+    protected int set(String[] props, String mode) {
+
+        //load userDefinedSettings to FileInputStream
+        try (FileInputStream fileInput = new FileInputStream(userDefinedSettings)) {
+            if (fileInput != null) {
+                properties.load(fileInput);
             }
-            userFileInputStream.close();
-        } catch (FileNotFoundException ex) {
-            System.err.println("Config.set: " + ex);
-            failSafe();
         } catch (IOException ex) {
-            System.err.println("Config.set: " + ex);
+            // feedback to the user
+            JOptionPane.showConfirmDialog(null, ex, "BIGNotepad message",
+                    JOptionPane.PLAIN_MESSAGE);
         }
 
         // fail-safe in the situation when settings were placed at first
         // but were deleted in the mean-time.
-        if (userFileInputStream == null | properties.size() == 0) {
+        if (properties.size() == 0) {
             // if user settings not present place a fresh copy from default
             failSafe();
+            JOptionPane.showConfirmDialog(null, "Properties size == 0",
+                    "BIGNotepad message",
+                    JOptionPane.PLAIN_MESSAGE);
         } else {
-            File file = new File(userDefinedSettings);
-            try (FileOutputStream newProperties = new FileOutputStream(file)) {
+            File userSettings = new File(userDefinedSettings);
+            try (FileOutputStream newProperties = new FileOutputStream(userSettings)) {
                 switch (mode) {
                     // mainstream - internal settings and window settings
                     case "settings":
@@ -245,38 +254,41 @@ public class Config {
                         }
                         break;
                     case "recentFiles":
-                        for (int i = 1; i < props.length; i++) {
-                            if (props[i] != null) {
-                                properties.setProperty("file" + i, props[i]);
-                            }
-                        }
+                        propSetter(props, "recentFiles");
                         break;
                     case "recentFind":
-                        for (int i = 1; i < props.length; i++) {
-                            if (props[i] != null) {
-                                properties.setProperty("find" + i, props[i]);
-                            }
-                        }
+                        propSetter(props, "find");
                         break;
                     case "recentReplace":
-                        for (int i = 1; i < props.length; i++) {
-                            if (props[i] != null) {
-                                properties.setProperty("replace" + i, props[i]);
-                            }
-                        }
+                        propSetter(props, "replace");
                         break;
                 }
                 properties.store(newProperties,
-                        "BIG Notepad stores here ALL internal settings");
-            } catch (FileNotFoundException ex) {
-                System.err.println("Config.set: " + ex);
-                return 1;
+                        "BIG Notepad stores here all internal settings");
+                return 0;
             } catch (IOException ex) {
+                // feedback to the user
+                JOptionPane.showConfirmDialog(null, ex, "BIGNotepad message",
+                        JOptionPane.PLAIN_MESSAGE);
                 System.err.println("Config.set: " + ex);
                 return -1;
             }
         }
-        return 0;
+        return -1;
+    }
+
+    /**
+     * Just so I don't repeat this for loop 4 times.
+     *
+     * @param props String array, basically the settings.
+     * @param mode property key value.
+     */
+    private void propSetter(String[] props, String mode) {
+        for (int i = 1; i < props.length; i++) {
+            if (props[i] != null) {
+                properties.setProperty(mode + i, props[i]);
+            }
+        }
     }
 
     /**
@@ -289,37 +301,43 @@ public class Config {
      * @return 0 for OK and -1 for IOException.
      */
     public int failSafe() {
+        //file defined by user, to keep 'user defined settings'
+        File userSettings = new File(userDefinedSettings);
+        // load settings in inputStream
+        try (InputStream inputStream
+                = getClass().getResourceAsStream(defaultSettings);
+                // define outputStream to write settings to a file
+                FileOutputStream outputStream
+                = new FileOutputStream(userSettings)) {
 
-        File file;
-        URL JARres = getClass().getResource(defaultJARSettings);
-        if (JARres.toString().startsWith("jar:")) {
-            try {
-                resourceInputStream = getClass().getResourceAsStream(defaultJARSettings);
-                file = File.createTempFile(userDefinedSettings, ".properties");
-                OutputStream out = new FileOutputStream(file);
-                int read;
-                byte[] bytes = new byte[1024];
+            if (inputStream == null) {
+                JOptionPane.showConfirmDialog(null,
+                        defaultSettings
+                        + "\ninputStream == null",
+                        "BIGNotepad message",
+                        JOptionPane.PLAIN_MESSAGE);
+            }
+            byte[] buffer = new byte[inputStream.available()];
+            // read from JAR
+            inputStream.read(buffer);
+            // write to physical file
+            outputStream.write(buffer);
 
-                while ((read = resourceInputStream.read(bytes)) != -1) {
-                    out.write(bytes, 0, read);
-                }
-                return 0;
-            } catch (IOException ex) {
-                System.err.println("Config failSafe: " + ex);
-                return -1;
-            }
-        } else {
-            //this will probably work in your IDE, but not from a JAR
-            Path source = new File(defaultIDESettings + ".properties").toPath();
-            Path target = new File(userDefinedSettings + ".properties").toPath();
-            try {
-                // we'll replace existing in case it is there, but empty.
-                Files.copy(source, target, REPLACE_EXISTING);
-                return 0;
-            } catch (IOException ex) {
-                System.err.println("Config failSafe: " + ex);
-                return -1;
-            }
+            // feedback to the user
+            JOptionPane.showConfirmDialog(null,
+                    "Your preferences were not found..\n"
+                    + "A fresh copy of default settings is now available at\n"
+                    + userDefinedSettings, "BIGNotepad message",
+                    JOptionPane.PLAIN_MESSAGE);
+
+            return 0;
+        } catch (IOException ex) {
+            // feedback to the user
+            JOptionPane.showConfirmDialog(null, ex,
+                    "BIGNotepad message",
+                    JOptionPane.PLAIN_MESSAGE);
+            System.err.println("Config.set: " + ex);
+            return -1;
         }
     }
 
@@ -330,20 +348,26 @@ public class Config {
      *
      * @return an array, containing 2 Strings: aboutAuthor and aboutSoftware.
      */
-    public String[] getInfo() {
-        try {
-            resourceInputStream = getClass().getClassLoader()
-                    .getResourceAsStream(aboutInfo);
-            if (resourceInputStream != null) {
-                properties.load(resourceInputStream);
+    protected String[] getInfo() {
+        try (InputStream inputStream
+                = getClass().getResourceAsStream(aboutInfo)) {
+            if (inputStream != null) {
+                properties.load(inputStream);
+            } else {
+                // feedback to the user
+                JOptionPane.showConfirmDialog(null,
+                        "Author detailes were not found..",
+                        "BIGNotepad message",
+                        JOptionPane.PLAIN_MESSAGE);
+                return null;
             }
         } catch (FileNotFoundException ex) {
-            System.err.println(ex);
+            System.err.println("Config.get: " + ex);
         } catch (IOException ex) {
-            System.err.println(ex);
+            System.err.println("Config.get: " + ex);
         }
-        String[] props = new String[3];
 
+        String[] props = new String[3];
         props[0] = properties.getProperty("aboutAuthor");
         props[1] = properties.getProperty("aboutSoftware");
         props[2] = properties.getProperty("thanks");

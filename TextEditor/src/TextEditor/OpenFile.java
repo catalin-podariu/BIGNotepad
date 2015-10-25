@@ -81,7 +81,7 @@ public class OpenFile extends BIGNotepad {
      * hovering over bigEdit JTextPane.
      *
      * @param file the text file to open
-     * @return the only place where feedback is needed is in RecentMenuAction
+     * @return the only place where findFeedback is needed is in RecentMenuAction
      */
     protected int openNew(File file) {
         // discard old text & title

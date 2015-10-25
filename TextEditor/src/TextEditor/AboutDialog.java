@@ -9,9 +9,11 @@ import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.border.Border;
 
 /**
@@ -32,22 +34,25 @@ public class AboutDialog {
 
     public void about() {
         pad.aboutDialog.setLocationRelativeTo(pad);
-        String authorPath = System.getProperty("user.dir")
-                + "\\src\\Resources\\images\\author.png";
-        String iconSoftwareTab = System.getProperty("user.dir")
-                + "\\src\\Resources\\images\\software.gif";
-        try {
-            pad.aboutPane.addTab("About Author",
-                    new ImageIcon(ImageIO.read(new File(authorPath))),
-                    pad.aboutAuthorPanel);
-            pad.aboutPane.addTab("About Software",
-                    new ImageIcon(ImageIO.read(new File(iconSoftwareTab))),
-                    pad.aboutSoftwarePanel);
+        // BIGNotepad icons path
+        ImageIcon authorImageIcon = SetBigIcons.getter(pad)
+                .bigImageIcon("/Resources/images/author.png");
+        ImageIcon softwareImageIcon = SetBigIcons.getter(pad)
+                .bigImageIcon("/Resources/images/software.gif");
 
-        } catch (IOException e) {
-            System.err.println(e);
+        if (authorImageIcon != null & softwareImageIcon != null) {
+            pad.aboutPane.addTab("About Author", authorImageIcon,
+                    pad.aboutAuthorPanel);
+            pad.aboutPane.addTab("About Software", softwareImageIcon,
+                    pad.aboutSoftwarePanel);
+        } else {
+            JOptionPane.showConfirmDialog(null,
+                    "AboutDialog: Something went wrong..",
+                    "BIGNotepad message",
+                    JOptionPane.PLAIN_MESSAGE);
         }
-        Config cfg = new Config();
+
+        Config cfg = new Config(pad.defaultTempFolder);
         String[] temp = cfg.getInfo();
         // add text to "About Author" panel
         pad.aboutAuthorText.setText(temp[0]);

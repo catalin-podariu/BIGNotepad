@@ -33,7 +33,7 @@ public class SaveCurrentSettings extends BIGNotepad {
      */
     public int saveSettings() {
 
-        Config cfg = new Config();
+        Config cfg = new Config(pad.defaultTempFolder);
         int winSettingsStatus = 0;
         int recentFilesStatus = 0;
         int findHistoryStatus = 0;
@@ -88,7 +88,7 @@ public class SaveCurrentSettings extends BIGNotepad {
 
         int status2 = cfg.set(internalSettings, "settings");
 
-        // feedback
+        // findFeedback
         if (winSettingsStatus == 1 | status2 == 1 | recentFilesStatus == 1
                 | findHistoryStatus == 1 | replaceHistoryStatus == 1) {
             // some or all of the settings were not saved.

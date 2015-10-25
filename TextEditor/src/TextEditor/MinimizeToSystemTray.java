@@ -8,7 +8,6 @@ package TextEditor;
 import java.awt.Image;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
-import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,7 +37,8 @@ public class MinimizeToSystemTray extends BIGNotepad {
     public void sysTrayMenu() {
         if (java.awt.SystemTray.isSupported()) {
             pad.sysTray = java.awt.SystemTray.getSystemTray();
-            Image image = Toolkit.getDefaultToolkit().getImage(pad.bigIcon);
+            Image image = SetBigIcons.getter(pad)
+                    .bigImage("/Resources/images/notepad.png");
             ActionListener exitListener = (ActionEvent evt) -> {
                 // otherwise it will only show the fileChooser
                 if (pad.askToSave) {

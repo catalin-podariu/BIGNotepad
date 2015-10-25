@@ -16,7 +16,6 @@ import java.awt.event.InputEvent;
 import java.awt.print.PrinterException;
 import java.io.File;
 import java.io.IOException;
-import javax.swing.ImageIcon;
 import javax.swing.text.BadLocationException;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
@@ -25,8 +24,8 @@ import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import javax.imageio.ImageIO;
 import javax.swing.Icon;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollBar;
 import javax.swing.text.SimpleAttributeSet;
@@ -40,7 +39,7 @@ public class BIGNotepad extends javax.swing.JFrame {
 
     // default constructor
     public BIGNotepad() {
-
+        defaultTempFolder = "C:\\InternalSettings.properties";
     }
 
     public static BIGNotepad getInstance() {
@@ -104,7 +103,7 @@ public class BIGNotepad extends javax.swing.JFrame {
         clickable = new javax.swing.JLabel();
         aboutPane = new javax.swing.JTabbedPane();
         aboutAuthorPanel = new javax.swing.JPanel();
-        aboutSoftwareP1 = new javax.swing.JScrollPane();
+        aboutAuthorP = new javax.swing.JScrollPane();
         aboutAuthorText = new javax.swing.JTextArea();
         aboutSoftwarePanel = new javax.swing.JPanel();
         aboutSoftwareP = new javax.swing.JScrollPane();
@@ -328,6 +327,7 @@ public class BIGNotepad extends javax.swing.JFrame {
         replaceDialog.getContentPane().add(replaceDFindNext, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 20, 110, -1));
 
         replaceDFindPrev.setText("Find previeous");
+        replaceDFindPrev.setEnabled(false);
         replaceDFindPrev.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 replaceDFindPrevActionPerformed(evt);
@@ -336,9 +336,15 @@ public class BIGNotepad extends javax.swing.JFrame {
         replaceDialog.getContentPane().add(replaceDFindPrev, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 50, 110, -1));
 
         replaceDReplace.setText("Replace");
+        replaceDReplace.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                replaceDReplaceActionPerformed(evt);
+            }
+        });
         replaceDialog.getContentPane().add(replaceDReplace, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 80, 110, -1));
 
         replaceDReplaceAll.setText("Replace all");
+        replaceDReplaceAll.setEnabled(false);
         replaceDialog.getContentPane().add(replaceDReplaceAll, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 110, 110, -1));
 
         replaceDClose.setText("Close");
@@ -364,15 +370,19 @@ public class BIGNotepad extends javax.swing.JFrame {
         replaceDialog.getContentPane().add(replaceDReplaceCombo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 280, -1));
 
         replaceDMatchWord.setText("Match whole word only");
+        replaceDMatchWord.setEnabled(false);
         replaceDialog.getContentPane().add(replaceDMatchWord, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 170, 20));
 
         replaceDMatchCase.setText("Match case");
+        replaceDMatchCase.setEnabled(false);
         replaceDialog.getContentPane().add(replaceDMatchCase, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 150, 20));
 
         replaceDRegex.setText("Regular expresion search");
+        replaceDRegex.setEnabled(false);
         replaceDialog.getContentPane().add(replaceDRegex, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, 180, 20));
 
         replaceDMatchWordStart.setText("Match begining of word only");
+        replaceDMatchWordStart.setEnabled(false);
         replaceDialog.getContentPane().add(replaceDMatchWordStart, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, 170, 20));
 
         replaceGotoFind.setForeground(new java.awt.Color(0, 0, 204));
@@ -400,11 +410,6 @@ public class BIGNotepad extends javax.swing.JFrame {
                 findDialogComponentShown(evt);
             }
         });
-        findDialog.addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent evt) {
-                findDialogWindowClosing(evt);
-            }
-        });
         findDialog.getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         findDFindNext.setText("Find next");
@@ -416,6 +421,7 @@ public class BIGNotepad extends javax.swing.JFrame {
         findDialog.getContentPane().add(findDFindNext, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 20, 110, -1));
 
         findDFindPrev.setText("Find previeous");
+        findDFindPrev.setEnabled(false);
         findDFindPrev.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 findDFindPrevActionPerformed(evt);
@@ -439,15 +445,19 @@ public class BIGNotepad extends javax.swing.JFrame {
         findDialog.getContentPane().add(findDSearchCombo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 280, -1));
 
         findDMatchWord.setText("Match whole word only");
+        findDMatchWord.setEnabled(false);
         findDialog.getContentPane().add(findDMatchWord, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 170, 20));
 
         findDMatchCase.setText("Match case");
+        findDMatchCase.setEnabled(false);
         findDialog.getContentPane().add(findDMatchCase, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 150, 20));
 
         findDRegex.setText("Regular expresion search");
+        findDRegex.setEnabled(false);
         findDialog.getContentPane().add(findDRegex, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 180, 20));
 
         findDMatchWordStart.setText("Match begining of word only");
+        findDMatchWordStart.setEnabled(false);
         findDialog.getContentPane().add(findDMatchWordStart, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 200, 20));
 
         findGotoReplace.setForeground(new java.awt.Color(0, 0, 204));
@@ -467,7 +477,6 @@ public class BIGNotepad extends javax.swing.JFrame {
 
         aboutDialog.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         aboutDialog.setTitle("About the author and this software..");
-        aboutDialog.setAlwaysOnTop(true);
         aboutDialog.setMinimumSize(new java.awt.Dimension(615, 405));
         aboutDialog.setModal(true);
         aboutDialog.setResizable(false);
@@ -499,11 +508,11 @@ public class BIGNotepad extends javax.swing.JFrame {
         aboutAuthorPanel.setForeground(new java.awt.Color(204, 204, 204));
         aboutAuthorPanel.setLayout(new java.awt.CardLayout());
 
-        aboutSoftwareP1.setBackground(new java.awt.Color(0, 51, 51));
-        aboutSoftwareP1.setBorder(null);
-        aboutSoftwareP1.setForeground(new java.awt.Color(204, 204, 204));
-        aboutSoftwareP1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        aboutSoftwareP1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        aboutAuthorP.setBackground(new java.awt.Color(0, 51, 51));
+        aboutAuthorP.setBorder(null);
+        aboutAuthorP.setForeground(new java.awt.Color(204, 204, 204));
+        aboutAuthorP.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        aboutAuthorP.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
         aboutAuthorText.setEditable(false);
         aboutAuthorText.setBackground(new java.awt.Color(0, 51, 51));
@@ -512,15 +521,14 @@ public class BIGNotepad extends javax.swing.JFrame {
         aboutAuthorText.setForeground(new java.awt.Color(204, 204, 204));
         aboutAuthorText.setLineWrap(true);
         aboutAuthorText.setRows(5);
-        aboutAuthorText.setText("\n\nAbout author goes here..\n");
         aboutAuthorText.setWrapStyleWord(true);
         aboutAuthorText.setBorder(null);
         aboutAuthorText.setMargin(new java.awt.Insets(4, 4, 4, 4));
         aboutAuthorText.setMaximumSize(new java.awt.Dimension(3600, 3000));
         aboutAuthorText.setMinimumSize(new java.awt.Dimension(500, 300));
-        aboutSoftwareP1.setViewportView(aboutAuthorText);
+        aboutAuthorP.setViewportView(aboutAuthorText);
 
-        aboutAuthorPanel.add(aboutSoftwareP1, "card3");
+        aboutAuthorPanel.add(aboutAuthorP, "card3");
 
         aboutPane.addTab("About Author  ", aboutAuthorPanel);
 
@@ -540,10 +548,8 @@ public class BIGNotepad extends javax.swing.JFrame {
         aboutSoftwareText.setForeground(new java.awt.Color(204, 204, 204));
         aboutSoftwareText.setLineWrap(true);
         aboutSoftwareText.setRows(5);
-        aboutSoftwareText.setText("\n\nFreeware license goes here...");
         aboutSoftwareText.setWrapStyleWord(true);
         aboutSoftwareText.setBorder(null);
-        aboutSoftwareText.setCaretPosition(0);
         aboutSoftwareText.setMargin(new java.awt.Insets(4, 4, 4, 4));
         aboutSoftwareText.setMaximumSize(new java.awt.Dimension(3600, 3000));
         aboutSoftwareText.setMinimumSize(new java.awt.Dimension(500, 300));
@@ -648,6 +654,7 @@ public class BIGNotepad extends javax.swing.JFrame {
         editorScrollPane.setForeground(new java.awt.Color(204, 204, 204));
         editorScrollPane.setDoubleBuffered(true);
         editorScrollPane.setName("scroller"); // NOI18N
+        editorScrollPane.setWheelScrollingEnabled(false);
 
         bigEdit.setBorder(null);
         bigEdit.setForeground(new java.awt.Color(51, 51, 51));
@@ -929,7 +936,6 @@ public class BIGNotepad extends javax.swing.JFrame {
 
         findMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
         findMenuItem.setText("Find String..");
-        findMenuItem.setEnabled(false);
         findMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 findMenuItemActionPerformed(evt);
@@ -939,7 +945,6 @@ public class BIGNotepad extends javax.swing.JFrame {
 
         replaceMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, java.awt.event.InputEvent.CTRL_MASK));
         replaceMenuItem.setText("Replace String..");
-        replaceMenuItem.setEnabled(false);
         replaceMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 replaceMenuItemActionPerformed(evt);
@@ -1324,40 +1329,24 @@ public class BIGNotepad extends javax.swing.JFrame {
     private void findDFindNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findDFindNextActionPerformed
         if (findDSearchCombo.getSelectedItem() != null) {
             findDSearchCombo.insertItemAt(findDSearchCombo.getSelectedItem(), 0);
-            System.out.println(findDSearchCombo.getSelectedItem().toString());
-//            FindReplace search = new FindReplace();
-//            search.findNextString();
+            findNext(findDSearchCombo);
         }
     }//GEN-LAST:event_findDFindNextActionPerformed
 
     private void findDFindPrevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findDFindPrevActionPerformed
-        if (findDSearchCombo.getSelectedItem() != null) {
-            findDSearchCombo.insertItemAt(findDSearchCombo.getSelectedItem(), 0);
-            System.out.println(findDSearchCombo.getSelectedItem().toString());
-//            FindReplace search = new FindReplace();
-//            search.findPreviousString();
-        }
+        // will be integrated soon!
     }//GEN-LAST:event_findDFindPrevActionPerformed
 
     private void replaceDFindNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_replaceDFindNextActionPerformed
-        if (findDSearchCombo.getSelectedItem() != null) {
-            findDSearchCombo.insertItemAt(findDSearchCombo.getSelectedItem(), 0);
-//            FindReplace search = new FindReplace();
-//            search.findNextString();
+        if (replaceDSearchCombo.getSelectedItem() != null) {
+            replaceDSearchCombo.insertItemAt(replaceDSearchCombo.getSelectedItem(), 0);
+            findNext(replaceDSearchCombo);
         }
     }//GEN-LAST:event_replaceDFindNextActionPerformed
 
     private void replaceDFindPrevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_replaceDFindPrevActionPerformed
-        if (findDSearchCombo.getSelectedItem() != null) {
-            findDSearchCombo.insertItemAt(findDSearchCombo.getSelectedIndex(), 0);
-//            FindReplace search = new FindReplace();
-//            search.findPreviousString();
-        }
+        // will be integrated soon!
     }//GEN-LAST:event_replaceDFindPrevActionPerformed
-
-    private void findDialogWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_findDialogWindowClosing
-
-    }//GEN-LAST:event_findDialogWindowClosing
 
     private void fileSaveAsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileSaveAsMenuItemActionPerformed
         SaveFile.valueOf(this).fileSaveAs();
@@ -1520,7 +1509,7 @@ public class BIGNotepad extends javax.swing.JFrame {
     }//GEN-LAST:event_settingsWinSizePositionActionPerformed
 
     private void settingsResetAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settingsResetAllActionPerformed
-        Config cfg = new Config();
+        Config cfg = new Config(defaultTempFolder);
         int status = cfg.failSafe();
         if (status == 0) {
             JOptionPane.showConfirmDialog(this,
@@ -1580,6 +1569,7 @@ public class BIGNotepad extends javax.swing.JFrame {
             quickRedo.setEnabled(undoManager.canRedo());
             quickCut.setEnabled(bigEdit.getSelectedText() != null);
             quickCopy.setEnabled(bigEdit.getSelectedText() != null);
+            quickSelectAll.setEnabled(bigEdit.getText().length() != 0);
             String data = null;
             try {
                 // get readable text from clipboard (if any)
@@ -1589,7 +1579,7 @@ public class BIGNotepad extends javax.swing.JFrame {
                 System.err.println("Clipboard error. " + ex);
             }
             quickPaste.setEnabled(data != null);
-            quickSwap.setEnabled(data != null);
+            quickSwap.setEnabled(data != null & bigEdit.getSelectedText() != null);
             // make it visible
             quickMenu.setVisible(true);
         } else if (evt.getButton() == 1) {
@@ -1720,9 +1710,9 @@ public class BIGNotepad extends javax.swing.JFrame {
         String noStringSelected = "";
         //if there is selected text, will add that to search text field
         if (bigEdit.getSelectedText() != null) {
-            String toFind = bigEdit.getSelectedText();
-            replaceDSearchCombo.addItem(toFind);
-            replaceDSearchCombo.setSelectedItem(toFind);
+            String word = bigEdit.getSelectedText();
+            replaceDSearchCombo.addItem(word);
+            replaceDSearchCombo.setSelectedItem(word);
         } else {
             replaceDSearchCombo.setSelectedItem(noStringSelected);
         }
@@ -1743,8 +1733,10 @@ public class BIGNotepad extends javax.swing.JFrame {
     }//GEN-LAST:event_findDialogComponentShown
 
     private void aboutDialogComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_aboutDialogComponentShown
-        // retrieve about info from properties file
-        AboutDialog.valueOf(this).about();
+        // retrieve about info only the first time you open the AboutDialog
+        if (aboutAuthorText.getText().length() == 0) {
+            AboutDialog.valueOf(this).about();
+        }
     }//GEN-LAST:event_aboutDialogComponentShown
 
     private void filePrintMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filePrintMenuItemActionPerformed
@@ -1838,19 +1830,23 @@ public class BIGNotepad extends javax.swing.JFrame {
     }//GEN-LAST:event_bigEditCaretUpdate
 
     private void helpTopicsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpTopicsActionPerformed
-        Icon msgIcon = null;
-        try {
-            msgIcon = new ImageIcon(ImageIO.read(new File(bigIcon)));
-        } catch (IOException ex) {
-            System.err.println(ex);
-        }
-        if(msgIcon != null){
+        Icon msgIcon = SetBigIcons.getter(this).bigIcon("/Resources/images/notepad.png");
+        if (msgIcon != null) {
             JOptionPane.showMessageDialog(this,
-                "Unfortunately, the disabled menu items are not available at the moment\n"
-                + "But they will be brought to life very soon!", "BIGNotepad october 2015",
-                JOptionPane.PLAIN_MESSAGE, msgIcon);
+                    "Unfortunately, the disabled menu items are not available at the moment\n"
+                    + "But they will be brought to life very soon!", "BIGNotepad october 2015",
+                    JOptionPane.PLAIN_MESSAGE, msgIcon);
+        } else {
+            JOptionPane.showConfirmDialog(null, "Image not found\n"
+                    + msgIcon, "BIGNotepad message",
+                    JOptionPane.PLAIN_MESSAGE);
         }
     }//GEN-LAST:event_helpTopicsActionPerformed
+
+    private void replaceDReplaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_replaceDReplaceActionPerformed
+        replaceFeedback();
+        findNext(replaceDSearchCombo);
+    }//GEN-LAST:event_replaceDReplaceActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1880,6 +1876,50 @@ public class BIGNotepad extends javax.swing.JFrame {
             BIGNotepad.getInstance().setVisible(true);
         });
 
+    }
+
+    public void findNext(JComboBox box) {
+        if (box.getSelectedItem() != null) {
+            String toFind = box.getItemAt(0).toString();
+            int currentSearchLocation = bigEdit.getCaretPosition();
+            try {
+                for (int index = currentSearchLocation; index + toFind.length()
+                        < document.getLength(); index++) {
+                    String match = document.getText(index, toFind.length());
+                    // find string IGNORE case
+                    if (toFind.equalsIgnoreCase(match)) {
+                        // tried to avoid repeating code, so call this method
+                        findFeedback(index, toFind.length());
+                        break;
+                        // find string MATCH case
+                    }
+                    if (index == document.getLength()) {
+                        JOptionPane.showMessageDialog(this, "EOF reached");
+                    }
+                    // add here other checkbox to validate
+                }
+            } catch (BadLocationException ex) {
+                System.err.println(ex);
+            }
+        }
+    }
+
+    public void findFeedback(int location, int toFindLength) {
+        bigEdit.requestFocus();
+        // next two lines keep the found String selected
+        bigEdit.setCaretPosition(location);
+        bigEdit.moveCaretPosition(location + toFindLength);
+    }
+
+    public void replaceFeedback() {
+        try {
+            String replaceWith = replaceDReplaceCombo.getSelectedItem().toString();
+            bigEdit.getDocument().remove(bigEdit.getSelectionStart(),
+                    bigEdit.getSelectedText().length());
+            bigEdit.getDocument().insertString(bigEdit.getSelectionStart(),
+                    replaceWith, null);
+        } catch (BadLocationException ex) {
+        }
     }
 
     /**
@@ -2002,23 +2042,6 @@ public class BIGNotepad extends javax.swing.JFrame {
     }
 
     /**
-     * Returns an ImageIcon, or null if the path was invalid.
-     * <br>
-     *
-     * @param path path to image
-     * @return ImageIcon
-     */
-    protected ImageIcon createImageIcon(String path) {
-        java.net.URL imgURL = aboutPane.getClass().getResource(path);
-        if (imgURL != null) {
-            return new ImageIcon(imgURL);
-        } else {
-            System.err.println("Err.. couldn't find file: " + path);
-            return null;
-        }
-    }
-
-    /**
      * Convert selected text to other type of case.
      * <br>
      *
@@ -2078,6 +2101,7 @@ public class BIGNotepad extends javax.swing.JFrame {
     protected String defaultTitle;
     protected File currentlyOpenedFile;
     protected String currentPath;
+    protected String defaultTempFolder;
 
     // recent history temps
     protected String[] recentFilesItems;
@@ -2118,12 +2142,12 @@ public class BIGNotepad extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutAuthorMenuItem;
+    protected javax.swing.JScrollPane aboutAuthorP;
     protected javax.swing.JPanel aboutAuthorPanel;
     protected javax.swing.JTextArea aboutAuthorText;
     protected javax.swing.JDialog aboutDialog;
     protected javax.swing.JTabbedPane aboutPane;
     protected javax.swing.JScrollPane aboutSoftwareP;
-    protected javax.swing.JScrollPane aboutSoftwareP1;
     protected javax.swing.JPanel aboutSoftwarePanel;
     protected javax.swing.JTextArea aboutSoftwareText;
     protected javax.swing.JTextPane bigEdit;

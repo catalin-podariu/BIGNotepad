@@ -1,4 +1,0 @@
-TextEditor.Zoom
-TextEditor.ScaledView
-TextEditor.ScaledEditorKit$StyledViewFactory
-TextEditor.ScaledEditorKit

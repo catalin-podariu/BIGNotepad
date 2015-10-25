@@ -5,7 +5,11 @@
  */
 package TextEditor;
 
-import java.awt.Toolkit;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 import javax.swing.text.SimpleAttributeSet;
 
 /**
@@ -15,12 +19,12 @@ import javax.swing.text.SimpleAttributeSet;
 public class DefaultConfig extends BIGNotepad {
 
     private BIGNotepad pad;
-    
-    public DefaultConfig(BIGNotepad pad){
+
+    public DefaultConfig(BIGNotepad pad) {
         this.pad = pad;
         document = this.pad.bigEdit.getStyledDocument();
     }
-    
+
     /**
      * Initial default configuration.
      * <br>
@@ -53,10 +57,12 @@ public class DefaultConfig extends BIGNotepad {
 
         Task t = new Task(pad);
         t.execute();
+        
+        SetBigIcons sbi;
 
         // load user defined settings or go to default if not found
         // it will also valueOf a fresh copy in current folder
-        Config cfg = new Config();
+        Config cfg = new Config(pad.defaultTempFolder);
         Object[] winSett = cfg.get("WindowSettings");
         pad.setSize((int) winSett[0], (int) winSett[1]);
         pad.setLocation((int) winSett[2], (int) winSett[3]);
@@ -112,11 +118,8 @@ public class DefaultConfig extends BIGNotepad {
         // add items to Replace drop-down "replace" list
         populateComboBox(pad.replaceDReplaceCombo, cfg.get("RecentReplace"));
 
-        // set icon
-        pad.bigIcon = System.getProperty("user.dir")
-                + "\\src\\Resources\\images\\notepad.png";
-
-        pad.setIconImage(Toolkit.getDefaultToolkit().getImage(pad.bigIcon));
+        // BIGNotepad icon
+        pad.setIconImage(SetBigIcons.getter(pad).bigImage("/Resources/images/notepad.png"));
     }
 
     // ads items to find/replace recent searches
