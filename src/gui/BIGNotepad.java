@@ -793,6 +793,9 @@ public class BIGNotepad extends javax.swing.JFrame {
 		DefaultConfig def = new DefaultConfig(this, document);
 		def.loadDefaultSettings();
 	}
+	
+	public int currentSearchLocation;
+	public boolean searchWrapAround;
 
 	public boolean fileIsReadOnly;
 

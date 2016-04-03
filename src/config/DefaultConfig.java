@@ -27,7 +27,7 @@ public class DefaultConfig {
 
 		ConfigOLD config = new ConfigOLD(notepad.defaultTempFolder);
 		Object[] windowSizeAndLocation = config.get("WindowSettings");
-		
+
 		notepad.setSize((int) windowSizeAndLocation[0], (int) windowSizeAndLocation[1]);
 		notepad.setLocation((int) windowSizeAndLocation[2], (int) windowSizeAndLocation[3]);
 
@@ -109,11 +109,13 @@ public class DefaultConfig {
 	}
 
 	protected void populateComboBox(javax.swing.JComboBox comboName, Object[] values) {
-		for (Object item : values) {
-			// check to see if item not empty
-			if (item != null) {
-				if (!item.toString().isEmpty()) {
-					comboName.addItem((String) item);
+		if (values != null) {
+			for (Object item : values) {
+				// check to see if item not empty
+				if (item != null) {
+					if (!item.toString().isEmpty()) {
+						comboName.addItem((String) item);
+					}
 				}
 			}
 		}
