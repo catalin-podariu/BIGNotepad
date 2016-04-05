@@ -8,6 +8,10 @@ import javax.swing.text.StyledDocument;
 
 import gui.BIGNotepad;
 
+/**
+ *
+ * @author catalin.podariu[at]gmail.com
+ */
 public class RegEx {
 
 	private BIGNotepad notepad;
@@ -26,22 +30,23 @@ public class RegEx {
 
 	public void findNext(String toFind, String regexPattern) throws BadLocationException {
 		for (int index = notepad.currentSearchLocation; index < document.getLength(); index++) {
-			if (matchFound(toFind)) {
+			String temp = document.getText(index, index + toFind.length());
+			if (compileAndMatch(toFind, regexPattern)) {
 				Feedback.valueOf(notepad).selectString(index, toFind.length());
 			}
 		}
 	}
 
-	public void findPrevious(String toFind) throws BadLocationException {
+	public void findPrevious(String toFind, String regexPattern) throws BadLocationException {
 		for (int index = notepad.currentSearchLocation; index - toFind.length() >= 0; index--) {
-			if (matchFound(toFind)) {
+			if (compileAndMatch(toFind, regexPattern)) {
 				Feedback.valueOf(notepad).selectString(index, toFind.length());
 			}
 		}
 	}
 
-	public boolean matchFound(final String toFind) {
-		serverPattern = Pattern.compile(toFind);
+	public boolean compileAndMatch(final String toFind, String regexPattern) {
+		serverPattern = Pattern.compile(regexPattern);
 		matchServer = serverPattern.matcher(toFind);
 		return matchServer.matches();
 	}
