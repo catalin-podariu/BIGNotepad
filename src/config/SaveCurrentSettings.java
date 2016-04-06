@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package io;
+package config;
 
-import config.ConfigOLD;
 import gui.BIGNotepad;
 
 /**
@@ -76,8 +75,8 @@ public class SaveCurrentSettings extends BIGNotepad {
         String[] internalSettings = {
             "windowTitleDisplayMode", pad.windowTitleDisplayMode + "",
             "zoomFactor", pad.zoomFactor + "",
-            "alwaysOnTop", String.valueOf(pad.alwaysOnTop),
-            "minimizeToTray", String.valueOf(pad.minimizeToTray),
+            "alwaysOnTop", String.valueOf(pad.isAlwaysOnTop),
+            "minimizeToTray", String.valueOf(pad.isMinimizedToTray),
             "rememeberWinSize", String.valueOf(pad.rememeberMainWindowSize),
             "rememberRecentFiles", String.valueOf(pad.rememberRecentFiles),
             "rememberRecentSearches", String.valueOf(pad.rememberRecentSearches),
@@ -86,7 +85,7 @@ public class SaveCurrentSettings extends BIGNotepad {
             "displayLongLineMarker", String.valueOf(pad.displayLongLineMarker),
             "displayStatusBar", String.valueOf(pad.displayStatusBar),
             "displayQuickMenu", String.valueOf(pad.displayQuickMenu),
-            "displayLineNumbers", String.valueOf(pad.displayLineNumbers)
+            "displayLineNumbers", String.valueOf(pad.lineNumbersActive)
         };
 
         int status2 = cfg.set(internalSettings, "settings");

@@ -19,6 +19,16 @@ import config.TitleDisplayMode;
  */
 public class QuickMenu {
 
+	protected javax.swing.JPopupMenu popupMenu;
+
+	protected javax.swing.JMenuItem quickUndo, quickRedo;
+	protected javax.swing.JPopupMenu.Separator quickMenuS1;
+	protected javax.swing.JMenuItem quickCut, quickCopy, quickCopyAll, quickPaste, quickSwap, quickClear;
+	protected javax.swing.JPopupMenu.Separator quickMenuS2;
+	protected javax.swing.JMenuItem quickSelectAll;
+
+	private BIGNotepad notepad;
+
 	private QuickMenu(BIGNotepad notepad) {
 		this.notepad = notepad;
 	}
@@ -62,7 +72,7 @@ public class QuickMenu {
 			notepad.undoManager.undo();
 			notepad.updateUndoMenuItems();
 		} catch (CannotUndoException cue) {
-			notepad.askToSave = notepad.undoManager.canUndo();
+			notepad.documentIsModified = notepad.undoManager.canUndo();
 			TitleDisplayMode.valueOf(notepad).setWindowTitleDisplay(notepad.windowTitleDisplayMode);
 			System.err.println("CannotUndo ex: " + cue);
 		}
@@ -95,12 +105,11 @@ public class QuickMenu {
 	}
 
 	void quickSwapActionPerformed(java.awt.event.ActionEvent evt) {
-
 		String currentlySelectedText = notepad.bigEdit.getSelectedText();
 		String textAlreadyOnClipboard = "";
 		try {
 			textAlreadyOnClipboard = (String) Toolkit.getDefaultToolkit().getSystemClipboard()
-					.getData(DataFlavor.stringFlavor);
+					.getData(DataFlavor.getTextPlainUnicodeFlavor());
 		} catch (UnsupportedFlavorException | IOException ex) {
 			System.err.println("Clipboard error. " + ex);
 		}
@@ -120,19 +129,4 @@ public class QuickMenu {
 		notepad.bigEdit.selectAll();
 	}
 
-	protected javax.swing.JPopupMenu popupMenu;
-
-	protected javax.swing.JMenuItem quickUndo;
-	protected javax.swing.JMenuItem quickRedo;
-	protected javax.swing.JPopupMenu.Separator quickMenuS1;
-	protected javax.swing.JMenuItem quickCut;
-	protected javax.swing.JMenuItem quickCopy;
-	protected javax.swing.JMenuItem quickCopyAll;
-	protected javax.swing.JMenuItem quickPaste;
-	protected javax.swing.JMenuItem quickSwap;
-	protected javax.swing.JMenuItem quickClear;
-	protected javax.swing.JPopupMenu.Separator quickMenuS2;
-	protected javax.swing.JMenuItem quickSelectAll;
-
-	private BIGNotepad notepad;
 }

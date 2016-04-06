@@ -4,11 +4,10 @@ import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-
-import gui.BIGNotepad;
 
 /**
  *
@@ -16,8 +15,9 @@ import gui.BIGNotepad;
  */
 public class IconHandler {
 
+	private URL insideIDEorJAR;
+
 	private IconHandler() {
-		
 		insideIDEorJAR = getClass().getResource("/Resources/images/notepad.png");
 	}
 
@@ -74,6 +74,4 @@ public class IconHandler {
 		}
 		return null;
 	}
-	
-	private URL insideIDEorJAR;
 }

@@ -28,11 +28,11 @@ import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoManager;
 
 import config.ConfigOLD;
-import config.DefaultConfig;
+import config.DefaultConfigOLD;
 import config.IconHandler;
+import config.SaveCurrentSettings;
 import config.TitleDisplayMode;
 import io.OpenFile;
-import io.SaveCurrentSettings;
 import io.SaveFile;
 import utilities.MinimizeToSystemTray;
 import utilities.WrapText;
@@ -46,9 +46,9 @@ public class BIGNotepad extends javax.swing.JFrame {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final int FILE_NAME = 0;
-	private static final int FILE_NAME_AND_PARENT_FOLDER = 1;
-	private static final int FULL_PATH = 2;
+	public static final int FILE_NAME = 0;
+	public static final int FILE_NAME_AND_PARENT_FOLDER = 1;
+	public static final int FULL_PATH = 2;
 
 	private final static int FILE_NOT_SAVED = 0;
 	private final static int FILE_SAVED = 1;
@@ -65,7 +65,7 @@ public class BIGNotepad extends javax.swing.JFrame {
 	}
 
 	void fileExitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-		if (askToSave) {
+		if (documentIsModified) {
 			int status = SaveFile.valueOf(this).saveConfirmation();
 			if (status == 1) {
 				exit(1);
@@ -114,7 +114,7 @@ public class BIGNotepad extends javax.swing.JFrame {
 	}
 
 	void fileNewMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-		if (askToSave) {
+		if (documentIsModified) {
 			int status = SaveFile.valueOf(this).saveConfirmation();
 			errorWritingFileUserFeedback(status);
 		} else {
@@ -149,7 +149,7 @@ public class BIGNotepad extends javax.swing.JFrame {
 			undoManager.undo();
 			updateUndoMenuItems();
 		} catch (CannotUndoException cue) {
-			askToSave = undoManager.canUndo();
+			documentIsModified = undoManager.canUndo();
 			TitleDisplayMode.valueOf(this).setWindowTitleDisplay(windowTitleDisplayMode);
 			System.err.println("CannotUndo ex: " + cue);
 		}
@@ -313,10 +313,10 @@ public class BIGNotepad extends javax.swing.JFrame {
 
 	void settAlwaysOnTopMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
 		if (settAlwaysOnTopMenuItem.isSelected()) {
-			alwaysOnTop = true;
+			isAlwaysOnTop = true;
 			this.setAlwaysOnTop(true);
 		} else {
-			alwaysOnTop = false;
+			isAlwaysOnTop = false;
 			this.setAlwaysOnTop(false);
 		}
 	}
@@ -324,9 +324,9 @@ public class BIGNotepad extends javax.swing.JFrame {
 	void setMinToTrayMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
 		if (setMinToTrayMenuItem.isSelected()) {
 			MinimizeToSystemTray.valueOf(this).sysTrayMenu();
-			minimizeToTray = true;
+			isMinimizedToTray = true;
 		} else {
-			minimizeToTray = false;
+			isMinimizedToTray = false;
 		}
 	}
 
@@ -537,29 +537,29 @@ public class BIGNotepad extends javax.swing.JFrame {
 		lineNumbers = new LineNumbers(editorScrollPane, bigEdit);
 
 		if (displayLineNumMenuItem.isSelected()) {
-			displayLineNumbers = true;
+			lineNumbersActive = true;
 			editorScrollPane.setRowHeaderView(lineNumbers);
 		} else {
-			displayLineNumbers = false;
+			lineNumbersActive = false;
 			editorScrollPane.setRowHeaderView(null);
 		}
 	}
 
 	void viewLongLineMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-		displayLongLineMarker = viewLongLineMenuItem.isSelected();
+		displayLongLineMarker = viewLongLineMenuItem.isSelected()
 
 	}
 
 	void settRecentFilesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-		rememberRecentFiles = settRecentFilesMenuItem.isSelected();
+		rememberRecentFiles = settRecentFilesMenuItem.isSelected()
 	}
 
 	void settSaveOnExitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-		saveSettingsOnExit = settSaveOnExitMenuItem.isSelected();
+		saveSettingsOnExit = settSaveOnExitMenuItem.isSelected()
 	}
 
 	void settRecentSearchMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
-		rememberRecentSearches = settRecentSearchMenuItem.isSelected();
+		rememberRecentSearches = settRecentSearchMenuItem.isSelected()
 	}
 
 	void formWindowClosing(java.awt.event.WindowEvent evt) {
@@ -671,7 +671,7 @@ public class BIGNotepad extends javax.swing.JFrame {
 	}
 
 	private void exitProcedureWithSaveCheck() {
-		if (askToSave) {
+		if (documentIsModified) {
 			exitProcedureSaveChangesFirst();
 		} else if (saveSettingsOnExit) {
 			SaveCurrentSettings.valueOf(this).saveSettings();
@@ -697,7 +697,7 @@ public class BIGNotepad extends javax.swing.JFrame {
 	protected void newBlankDocument() {
 		bigEdit.setText("");
 		this.setTitle(defaultTitle);
-		askToSave = false;
+		documentIsModified = false;
 		undoManager.discardAllEdits();
 		currentlyOpenedFile = null;
 		fileSetReadOnlyMenuItem.setSelected(false);
@@ -790,7 +790,7 @@ public class BIGNotepad extends javax.swing.JFrame {
 	}
 
 	void initConfig() {
-		DefaultConfig def = new DefaultConfig(this, document);
+		DefaultConfigOLD def = new DefaultConfigOLD(this);
 		def.loadDefaultSettings();
 	}
 	
@@ -799,7 +799,7 @@ public class BIGNotepad extends javax.swing.JFrame {
 
 	public boolean fileIsReadOnly;
 
-	public boolean askToSave = false;
+	public boolean documentIsModified = false;
 	public boolean firstTimeOpen;
 
 	public String defaultTitle;
@@ -814,8 +814,8 @@ public class BIGNotepad extends javax.swing.JFrame {
 	public int windowTitleDisplayMode;
 	public int zoomFactor = 100;
 
-	public boolean alwaysOnTop;
-	public boolean minimizeToTray;
+	public boolean isAlwaysOnTop;
+	public boolean isMinimizedToTray;
 	public boolean rememeberMainWindowSize;
 	public boolean rememberRecentFiles;
 	public boolean rememberRecentSearches;
@@ -825,7 +825,7 @@ public class BIGNotepad extends javax.swing.JFrame {
 	public boolean displayStatusBar;
 	public boolean displayQuickMenu;
 
-	public boolean displayLineNumbers;
+	public boolean lineNumbersActive;
 	public LineNumbers lineNumbers;
 
 	public UndoManager undoManager;

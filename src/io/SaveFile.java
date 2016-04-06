@@ -141,7 +141,7 @@ public class SaveFile extends BIGNotepad {
                         "File not saved - Filename error",
                         JOptionPane.PLAIN_MESSAGE);
             }
-            pad.askToSave = false;
+            pad.documentIsModified = false;
             TitleDisplayMode.valueOf(pad).setWindowTitleDisplay(pad.windowTitleDisplayMode);
         } else {
             // save with a different name

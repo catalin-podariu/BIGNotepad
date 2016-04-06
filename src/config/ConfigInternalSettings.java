@@ -1,93 +1,122 @@
 package config;
 
+/**
+ * 
+ * @author catalin.podariu[at]gmail.com
+ */
+import gui.BIGNotepad;
+
 public class ConfigInternalSettings {
 
-	protected boolean isAlwaysOnTop() {
-		return isAlwaysOnTop;
-	}
-	protected void setAlwaysOnTop(boolean isAlwaysOnTop) {
-		this.isAlwaysOnTop = isAlwaysOnTop;
-	}
-	
-	protected boolean isMinimizedToTray() {
-		return isMinimizedToTray;
-	}
-	protected void setMinimizedToTray(boolean isMinimizedToTray) {
-		this.isMinimizedToTray = isMinimizedToTray;
-	}
-	
-	protected boolean isRememebersWinSize() {
-		return rememebersWinSize;
-	}
-	protected void setRememebersWinSize(boolean rememebersWinSize) {
-		this.rememebersWinSize = rememebersWinSize;
-	}
-	
-	protected boolean isRemembersRecentFiles() {
-		return remembersRecentFiles;
-	}
-	protected void setRemembersRecentFiles(boolean remembersRecentFiles) {
-		this.remembersRecentFiles = remembersRecentFiles;
-	}
-	
-	protected boolean isRemembersRecentSearches() {
-		return remembersRecentSearches;
-	}
-	protected void setRemembersRecentSearches(boolean remembersRecentSearches) {
-		this.remembersRecentSearches = remembersRecentSearches;
-	}
-	
-	protected boolean isSaveSettingsOnExit() {
-		return saveSettingsOnExit;
-	}
-	protected void setSaveSettingsOnExit(boolean saveSettingsOnExit) {
-		this.saveSettingsOnExit = saveSettingsOnExit;
-	}
-	
-	protected boolean isWordWrapActive() {
-		return wordWrapActive;
-	}
-	protected void setWordWrapActive(boolean wordWrapActive) {
-		this.wordWrapActive = wordWrapActive;
-	}
-	
-	protected boolean isDisplaysLongLineMarker() {
-		return displaysLongLineMarker;
-	}
-	protected void setDisplaysLongLineMarker(boolean displaysLongLineMarker) {
-		this.displaysLongLineMarker = displaysLongLineMarker;
-	}
-	
-	protected boolean isDisplaysStatusBar() {
-		return displaysStatusBar;
-	}
-	protected void setDisplaysStatusBar(boolean displaysStatusBar) {
-		this.displaysStatusBar = displaysStatusBar;
-	}
-	
-	protected boolean isDisplaysQuickMenu() {
-		return displaysQuickMenu;
-	}
-	protected void setDisplaysQuickMenu(boolean displaysQuickMenu) {
-		this.displaysQuickMenu = displaysQuickMenu;
-	}
-	
-	protected boolean isDisplaysLineNumbers() {
-		return displaysLineNumbers;
-	}
-	protected void setDisplaysLineNumbers(boolean displaysLineNumbers) {
-		this.displaysLineNumbers = displaysLineNumbers;
-	}
+	private BIGNotepad notepad;
 
 	private boolean isAlwaysOnTop;
 	private boolean isMinimizedToTray;
-	private boolean rememebersWinSize;
-	private boolean remembersRecentFiles;
-	private boolean remembersRecentSearches;
+	private boolean rememeberMainWindowSize, rememberRecentFiles, rememberRecentSearches;
 	private boolean saveSettingsOnExit;
 	private boolean wordWrapActive;
-	private boolean displaysLongLineMarker;
-	private boolean displaysStatusBar;
-	private boolean displaysQuickMenu;
-	private boolean displaysLineNumbers;
+	private boolean longLineMarkerActive, statusBarActive, quickMenuActive, lineNumbersActive;
+
+	public ConfigInternalSettings(BIGNotepad notepad) {
+		this.notepad = notepad;
+	}
+
+	protected boolean isAlwaysOnTop() {
+		notepad.settAlwaysOnTopMenuItem.setSelected(isAlwaysOnTop);
+		return isAlwaysOnTop;
+	}
+
+	protected void setAlwaysOnTop(boolean isAlwaysOnTop) {
+		this.isAlwaysOnTop = isAlwaysOnTop;
+	}
+
+	protected boolean isMinimizedToTray() {
+		notepad.setMinToTrayMenuItem.setSelected(isMinimizedToTray);
+		return isMinimizedToTray;
+	}
+
+	protected void setMinimizedToTray(boolean isMinimizedToTray) {
+		this.isMinimizedToTray = isMinimizedToTray;
+	}
+
+	protected boolean rememeberMainWindowSize() {
+		notepad.settingsMainWindowSizePosition.setSelected(rememeberMainWindowSize);
+		return rememeberMainWindowSize;
+	}
+
+	protected void setRememeberWinSize(boolean rememeberWinSize) {
+		this.rememeberMainWindowSize = rememeberWinSize;
+	}
+
+	protected boolean rememberRecentFiles() {
+		notepad.settRecentFilesMenuItem.setSelected(rememberRecentFiles);
+		return rememberRecentFiles;
+	}
+
+	protected void setRememberRecentFiles(boolean rememberRecentFiles) {
+		this.rememberRecentFiles = rememberRecentFiles;
+	}
+
+	protected boolean rememberRecentSearches() {
+		notepad.settRecentSearchMenuItem.setSelected(rememberRecentSearches);
+		return rememberRecentSearches;
+	}
+
+	protected void setRememberRecentSearches(boolean rememberRecentSearches) {
+		this.rememberRecentSearches = rememberRecentSearches;
+	}
+
+	protected boolean saveSettingsOnExit() {
+		notepad.settSaveOnExitMenuItem.setSelected(saveSettingsOnExit);
+		return saveSettingsOnExit;
+	}
+
+	protected void setSaveSettingsOnExit(boolean saveSettingsOnExit) {
+		this.saveSettingsOnExit = saveSettingsOnExit;
+	}
+
+	protected boolean isWordWrapActive() {
+		notepad.viewWrapMenuItem.setSelected(wordWrapActive);
+		return wordWrapActive;
+	}
+
+	protected void setWordWrapActive(boolean wordWrapActive) {
+		this.wordWrapActive = wordWrapActive;
+	}
+
+	protected boolean displaysLongLineMarker() {
+		notepad.viewLongLineMenuItem.setSelected(longLineMarkerActive);
+		return longLineMarkerActive;
+	}
+
+	protected void setDisplaysLongLineMarker(boolean displaysLongLineMarker) {
+		this.longLineMarkerActive = displaysLongLineMarker;
+	}
+
+	protected boolean isStatusBarActive() {
+		notepad.viewStatusBarMenuItem.setSelected(notepad.displayStatusBar);
+		return statusBarActive;
+	}
+
+	protected void setDisplaysStatusBar(boolean displaysStatusBar) {
+		this.statusBarActive = displaysStatusBar;
+	}
+
+	protected boolean isQuickMenuActive() {
+		notepad.viewQuickMMenuItem.setSelected(notepad.displayQuickMenu);
+		return quickMenuActive;
+	}
+
+	protected void setDisplaysQuickMenu(boolean displaysQuickMenu) {
+		this.quickMenuActive = displaysQuickMenu;
+	}
+
+	protected boolean isLineNumbersActive() {
+		notepad.displayLineNumMenuItem.setSelected(lineNumbersActive);
+		return lineNumbersActive;
+	}
+
+	protected void setDisplaysLineNumbers(boolean displaysLineNumbers) {
+		this.lineNumbersActive = displaysLineNumbers;
+	}
 }

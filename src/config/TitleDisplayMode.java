@@ -1,82 +1,76 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package config;
 
 import gui.BIGNotepad;
 
 /**
  *
- * @author mrbigheart
+ * @author catalin.podariu[at]gmail.com
  */
 public class TitleDisplayMode {
 
-    private BIGNotepad notepad;
+	private BIGNotepad notepad;
+	private final String IS_CHANGED_FLAG = "*";
 
-    private TitleDisplayMode(BIGNotepad notepad) {
-        this.notepad = notepad;
-    }
+	private TitleDisplayMode(BIGNotepad notepad) {
+		this.notepad = notepad;
+	}
 
-    public static TitleDisplayMode valueOf(BIGNotepad pad) {
-        return new TitleDisplayMode(pad);
-    }
+	public static TitleDisplayMode valueOf(BIGNotepad notepad) {
+		return new TitleDisplayMode(notepad);
+	}
 
-    /**
-     * Set Window Title Mode.
-     * <br>
-     * Choose how you want the file name to be displayed in the title.
-     * <br>
-     *
-     * @param mode 0 = fileName (default); 1 = file name and parent directory;
-     * <br> 2 = full path
-     */
-    public void setWindowTitleDisplay(int mode) {
-        if (notepad.currentlyOpenedFile != null) {
-            // default is 0 - just the file name
-            if (mode == 0) {
-                if (notepad.askToSave) {
-                    // star to notify file has changed
-                    notepad.setTitle(notepad.currentlyOpenedFile.getName()
-                            + "  |  BIGNotepad" + "*");
-                } else {
-                    notepad.setTitle(notepad.currentlyOpenedFile.getName()
-                            + "  |  BIGNotepad");
-                }
-            } else if (mode == 1) {
-                String path = notepad.currentlyOpenedFile.getAbsolutePath();
-                String fileName = path.substring(0, path.lastIndexOf('\\') - 1);
-                String directoryName = path.substring(fileName.lastIndexOf('\\')
-                        + 1, path.length());
-                if (notepad.askToSave) {
-                    // star to notify file has changed
-                    notepad.setTitle(directoryName + "  |  BIGNotepad" + "*");
-                } else {
-                    notepad.setTitle(directoryName + "  |  BIGNotepad");
-                }
-            } else if (mode == 2) {
-                String fullPath = notepad.currentlyOpenedFile.getAbsolutePath();
-                // trim paths that are longer than 50 characters
-                if (fullPath.length() > 50) {
-                    fullPath = fullPath.substring(0, 50) + " .... "
-                            + fullPath.substring(fullPath.lastIndexOf('\\') - 1,
-                                    fullPath.length());
-                }
-                if (notepad.askToSave) {
-                    // star to notify file has changed
-                    notepad.setTitle(fullPath + "  |  BIGNotepad" + "*");
-                } else {
-                    notepad.setTitle(fullPath + "  |  BIGNotepad");
-                }
-            }
-        } else {
-            if (notepad.askToSave) {
-                // star to notify file has changed
-                notepad.setTitle(notepad.defaultTitle + "*");
-            } else {
-                notepad.setTitle(notepad.defaultTitle);
-            }
-        }
-    }
+	public void setWindowTitleDisplay(int titleMode) {
+		if (notepad.currentlyOpenedFile != null) {
+			if (titleMode == BIGNotepad.FILE_NAME) { // default
+				setTitleDisplayModeTo_FileName();
+			} else if (titleMode == BIGNotepad.FILE_NAME_AND_PARENT_FOLDER) {
+				setTitleDisplayModeTo_FileNameAndParentFolder();
+			} else if (titleMode == BIGNotepad.FULL_PATH) {
+				setTitleDisplayModeTo_FullPath();
+			}
+		} else {
+			if (notepad.documentIsModified) {
+				notepad.setTitle(notepad.defaultTitle + IS_CHANGED_FLAG);
+			} else {
+				notepad.setTitle(notepad.defaultTitle);
+			}
+		}
+	}
+
+	private void setTitleDisplayModeTo_FullPath() {
+		String fullFilePath = notepad.currentlyOpenedFile.getAbsolutePath();
+		if (fullFilePath.length() > 50) {
+			fullFilePath = fullFilePath.substring(0, 50) + " .... " //
+					+ fullFilePath.substring(fullFilePath.lastIndexOf('\\') - 1, //
+							fullFilePath.length());
+		}
+		if (notepad.documentIsModified) {
+			notepad.setTitle(fullFilePath + "  |  BIGNotepad" + IS_CHANGED_FLAG);
+		} else {
+			notepad.setTitle(fullFilePath + "  |  BIGNotepad");
+		}
+	}
+
+	private void setTitleDisplayModeTo_FileName() {
+		if (notepad.documentIsModified) {
+			notepad.setTitle(notepad.currentlyOpenedFile.getName() //
+					+ "  |  BIGNotepad" + IS_CHANGED_FLAG);
+		} else {
+			notepad.setTitle(notepad.currentlyOpenedFile.getName() //
+					+ "  |  BIGNotepad");
+		}
+	}
+
+	private void setTitleDisplayModeTo_FileNameAndParentFolder() {
+		String filePath = notepad.currentlyOpenedFile.getAbsolutePath();
+		String fileName = filePath.substring(0, filePath.lastIndexOf('\\') - 1);
+		String folderName = filePath.substring(fileName.lastIndexOf('\\') + 1, //
+				filePath.length());
+		if (notepad.documentIsModified) {
+			notepad.setTitle("\\" + folderName + "\\" //
+					+ fileName + "  |  BIGNotepad" + IS_CHANGED_FLAG);
+		} else {
+			notepad.setTitle(folderName + "  |  BIGNotepad");
+		}
+	}
 }

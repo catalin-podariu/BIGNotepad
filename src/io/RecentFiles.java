@@ -66,7 +66,7 @@ public class RecentFiles extends BIGNotepad {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         int openStatus = 0;
-                        if (pad.askToSave) {
+                        if (pad.documentIsModified) {
                             // save opened document first
                             int saveStatus = SaveFile.valueOf(pad).saveConfirmation();
                             if (saveStatus == 0 | saveStatus == 1) {

@@ -4,21 +4,21 @@ import java.util.Stack;
 
 public class ConfigRecentSearches {
 
-	public ConfigRecentSearches(){
+	private Stack<String> recentSearchItems;
+
+	public ConfigRecentSearches() {
 		recentSearchItems = new Stack<>();
 	}
-	
-	public void addSearchItem(String searchString){
+
+	public void addSearchItem(String searchString) {
 		recentSearchItems.push(searchString);
 	}
-	
-	public Object[] getAllItems(){
+
+	public Object[] getAllItems() {
 		return recentSearchItems.toArray();
 	}
-	
-	public void getItemByIndex(int itemIndex){
+
+	public void getItemByIndex(int itemIndex) {
 		recentSearchItems.get(itemIndex);
 	}
-	
-	private Stack<String> recentSearchItems;
 }

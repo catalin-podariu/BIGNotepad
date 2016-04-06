@@ -4,22 +4,21 @@ import java.util.Stack;
 
 public class ConfigRecentFiles {
 
-	public ConfigRecentFiles(){
+	private Stack<String> recentFileItems;
+
+	public ConfigRecentFiles() {
 		recentFileItems = new Stack<>();
 	}
-	
-	public void addRecentFile(String recentFileName){
+
+	public void addRecentFile(String recentFileName) {
 		recentFileItems.push(recentFileName);
 	}
-	
-	public Object[] getAllItems(){
+
+	public Object[] getAllItems() {
 		return recentFileItems.toArray();
 	}
-	
-	public void getItemByIndex(int itemIndex){
+
+	public void getItemByIndex(int itemIndex) {
 		recentFileItems.get(itemIndex);
 	}
-	
-	private Stack<String> recentFileItems;
-	
 }

@@ -37,7 +37,7 @@ public class OpenFile extends BIGNotepad {
 
     // open new file
     public void fileOpenNew() {
-        if (pad.askToSave) {
+        if (pad.documentIsModified) {
             // save opened document first
             int status = SaveFile.valueOf(pad).saveConfirmation();
             // 1 = NO was pressed; 0 = file was saved
@@ -115,7 +115,7 @@ public class OpenFile extends BIGNotepad {
         RecentFiles.valueOf(pad).addRecentFileItems(recentFile);
         pad.firstTimeOpen = true;
         // reset title
-        pad.askToSave = false;
+        pad.documentIsModified = false;
         TitleDisplayMode.valueOf(pad).setWindowTitleDisplay(windowTitleDisplayMode);
         // set cursor to start of document
         pad.bigEdit.setCaretPosition(0);
@@ -124,10 +124,10 @@ public class OpenFile extends BIGNotepad {
 
         // bring back the line numbers if they were displayed before
         if (pad.displayLineNumMenuItem.isSelected()) {
-            pad.displayLineNumbers = true;
+            pad.lineNumbersActive = true;
             pad.editorScrollPane.setRowHeaderView(pad.lineNumbers);
         } else {
-            pad.displayLineNumbers = false;
+            pad.lineNumbersActive = false;
             pad.editorScrollPane.setRowHeaderView(null);
         }
         return 0;

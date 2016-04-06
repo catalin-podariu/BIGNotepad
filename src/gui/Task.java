@@ -38,10 +38,10 @@ public class Task extends SwingWorker<Void, Void> {
 	public Void doInBackground() {
 		notepad.document.addUndoableEditListener((UndoableEditEvent e) -> {
 			notepad.undoManager.addEdit(e.getEdit());
-			notepad.askToSave = notepad.undoManager.canUndo();
+			notepad.documentIsModified = notepad.undoManager.canUndo();
 			if (notepad.firstTimeOpen) {
 				notepad.firstTimeOpen = false;
-				notepad.askToSave = false;
+				notepad.documentIsModified = false;
 			}
 			TitleDisplayMode.valueOf(notepad).setWindowTitleDisplay(notepad.windowTitleDisplayMode);
 			notepad.updateUndoMenuItems();
@@ -90,7 +90,7 @@ public class Task extends SwingWorker<Void, Void> {
 
 			private void getDroppedFiles(List<File> droppedFiles) {
 				droppedFiles.stream().forEach((File file) -> {
-					if (notepad.askToSave) {
+					if (notepad.documentIsModified) {
 						int status = SaveFile.valueOf(notepad).saveConfirmation();
 						// safe to open new dragged document
 						if (status != -1 | status != 2) {
