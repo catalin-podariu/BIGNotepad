@@ -50,54 +50,6 @@ public class BIGNotepad extends javax.swing.JFrame {
 		// TODO catalin.podariu ?!
 	}
 
-	void replaceDCloseActionPerformed(java.awt.event.ActionEvent evt) {
-		replaceDialog.dispose();
-	}
-
-	void findDCloseActionPerformed(java.awt.event.ActionEvent evt) {
-		findDialog.dispose();
-	}
-
-	void replaceGotoFindMouseClicked(java.awt.event.MouseEvent evt) {
-		replaceDialog.dispose();
-		if (replaceDSearchCombo.getSelectedItem() != null) {
-			findDSearchCombo.addItem(replaceDSearchCombo.getSelectedItem());
-			findDSearchCombo.setSelectedItem(replaceDSearchCombo.getSelectedItem());
-		}
-		findDialog.setVisible(true);
-	}
-
-	void findGotoReplaceMouseClicked(java.awt.event.MouseEvent evt) {
-		findDialog.dispose();
-		if (findDSearchCombo.getSelectedItem() != null) {
-			replaceDSearchCombo.addItem(findDSearchCombo.getSelectedItem());
-			replaceDSearchCombo.setSelectedItem(findDSearchCombo.getSelectedItem());
-		}
-		replaceDialog.showDialog(true);
-	}
-
-	void findDFindNextActionPerformed(java.awt.event.ActionEvent evt) {
-		if (findDSearchCombo.getSelectedItem() != null) {
-			findDSearchCombo.insertItemAt(findDSearchCombo.getSelectedItem(), 0);
-			findNextString(findDSearchCombo);
-		}
-	}
-
-	void findDFindPrevActionPerformed(java.awt.event.ActionEvent evt) {
-
-	}
-
-	void replaceDFindNextActionPerformed(java.awt.event.ActionEvent evt) {
-		if (replaceDSearchCombo.getSelectedItem() != null) {
-			replaceDSearchCombo.insertItemAt(replaceDSearchCombo.getSelectedItem(), 0);
-			findNextString(replaceDSearchCombo);
-		}
-	}
-
-	void replaceDFindPrevActionPerformed(java.awt.event.ActionEvent evt) {
-		// TODO catalin.podariu search engine call
-	}
-
 	void bigEditMouseClicked(java.awt.event.MouseEvent evt) {
 		if (evt.getButton() == MouseEvent.BUTTON3) {
 			QuickMenu.display(this);
@@ -163,8 +115,6 @@ public class BIGNotepad extends javax.swing.JFrame {
 			}
 		}
 	}
-
-	
 
 	void bigEditCaretUpdate(javax.swing.event.CaretEvent evt) {
 

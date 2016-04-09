@@ -12,14 +12,14 @@ public class FindDialog {
 	private BIGNotepad notepad;
 	private StyledDocument document;
 	private JTextPane bigEdit;
-	
+
 	private JDialog findDialog;
 
 	private FindDialog(BIGNotepad notepad) {
 		this.notepad = notepad;
 		document = bigEdit.getStyledDocument();
 		bigEdit = notepad.bigEdit;
-		
+
 		findDialog = new javax.swing.JDialog();
 	}
 
@@ -30,8 +30,6 @@ public class FindDialog {
 	public void showDialog(boolean status) {
 		findDialog.setVisible(status);
 	}
-	
-	
 
 	void findDialogComponentShown(java.awt.event.ComponentEvent evt) {
 		replaceDialog.dispose();
@@ -49,12 +47,12 @@ public class FindDialog {
 			replaceDSearchCombo.setSelectedItem(noStringSelected);
 		}
 	}
-	
+
 	void replaceDReplaceActionPerformed(java.awt.event.ActionEvent evt) {
 		selectReplacedStringUserFeedback();
 		findNextString(replaceDSearchCombo);
 	}
-	
+
 	public void findNextString(JComboBox<Object> comboBox) {
 		if (comboBox.getSelectedItem() != null) {
 			String stringToFind = comboBox.getItemAt(0).toString();
@@ -80,7 +78,7 @@ public class FindDialog {
 			}
 		}
 	}
-	
+
 	private void selectFoundString(int location, int toFindLength) {
 		bigEdit.requestFocus();
 		bigEdit.setCaretPosition(location);
@@ -94,6 +92,30 @@ public class FindDialog {
 			bigEdit.getDocument().insertString(bigEdit.getSelectionStart(), replaceWith, null);
 		} catch (BadLocationException ex) {
 		}
+	}
+
+	void findDCloseActionPerformed(java.awt.event.ActionEvent evt) {
+		findDialog.dispose();
+	}
+
+	void findGotoReplaceMouseClicked(java.awt.event.MouseEvent evt) {
+		findDialog.dispose();
+		if (findDSearchCombo.getSelectedItem() != null) {
+			replaceDSearchCombo.addItem(findDSearchCombo.getSelectedItem());
+			replaceDSearchCombo.setSelectedItem(findDSearchCombo.getSelectedItem());
+		}
+		replaceDialog.showDialog(true);
+	}
+
+	void findDFindNextActionPerformed(java.awt.event.ActionEvent evt) {
+		if (findDSearchCombo.getSelectedItem() != null) {
+			findDSearchCombo.insertItemAt(findDSearchCombo.getSelectedItem(), 0);
+			findNextString(findDSearchCombo);
+		}
+	}
+
+	void findDFindPrevActionPerformed(java.awt.event.ActionEvent evt) {
+
 	}
 
 	javax.swing.JCheckBox highlightRSearchCombo;
