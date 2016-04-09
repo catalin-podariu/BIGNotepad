@@ -22,12 +22,12 @@ import gui.BIGNotepad;
  */
 public class OpenFile extends BIGNotepad {
 
-    private BIGNotepad pad;
+    private BIGNotepad notepad;
 
     // private constructor
-    private OpenFile(BIGNotepad pad) {
-        this.pad = pad;
-        document = this.pad.bigEdit.getStyledDocument();
+    private OpenFile(BIGNotepad notepad) {
+        this.notepad = notepad;
+        document = this.notepad.bigEdit.getStyledDocument();
     }
     
     // public static factory
@@ -37,9 +37,9 @@ public class OpenFile extends BIGNotepad {
 
     // open new file
     public void fileOpenNew() {
-        if (pad.documentIsModified) {
+        if (notepad.documentIsModified) {
             // save opened document first
-            int status = SaveFile.valueOf(pad).saveConfirmation();
+            int status = SaveFile.valueOf(notepad).saveConfirmation();
             // 1 = NO was pressed; 0 = file was saved
             if (status == 1 | status == 0) {
                 openNewDialog();
@@ -47,9 +47,9 @@ public class OpenFile extends BIGNotepad {
         } else {
             openNewDialog();
         }
-        pad.bigEdit.setCaretPosition(0);
+        notepad.bigEdit.setCaretPosition(0);
         // otherwise it will "undo" every line read by fastReader
-        pad.undoManager.discardAllEdits();
+        notepad.undoManager.discardAllEdits();
     }
 
     /**
@@ -58,7 +58,7 @@ public class OpenFile extends BIGNotepad {
      * Customize and display Open Dialog (fileChooser)
      */
     protected void openNewDialog() {
-        JFileChooser openFileChooser = new JFileChooser(pad.currentPath);
+        JFileChooser openFileChooser = new JFileChooser(notepad.currentPath);
         FileFilter filter = new FileNameExtensionFilter("Plain text document  "
                 + "*.txt *.log *.lst *.srt *.sub", "*.properties");
         openFileChooser.addChoosableFileFilter(filter);
@@ -66,7 +66,7 @@ public class OpenFile extends BIGNotepad {
         openFileChooser.setPreferredSize(new Dimension(600, 400));
         if (openFileChooser.showOpenDialog(
                 this) == JFileChooser.APPROVE_OPTION) {
-            pad.currentlyOpenedFile = openFileChooser.getSelectedFile();
+            notepad.currentlyOpenedFile = openFileChooser.getSelectedFile();
             openNew(openFileChooser.getSelectedFile());
         }
     }
@@ -88,15 +88,15 @@ public class OpenFile extends BIGNotepad {
      */
     public int openNew(File file) {
         // discard old text & title
-        pad.bigEdit.setText("");
-        this.setTitle(pad.defaultTitle);
+        notepad.bigEdit.setText("");
+        this.setTitle(notepad.defaultTitle);
         // hide line numbers before open, to avoid 'offset out of bounds' error
-        pad.editorScrollPane.setRowHeaderView(null);
+        notepad.editorScrollPane.setRowHeaderView(null);
 
-        pad.bigEdit.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        notepad.bigEdit.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         // read text that will be displayed in bigEdit
-        int status = FastReader.valueOf(pad).fastReader(file.getPath());
-        pad.bigEdit.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
+        int status = FastReader.valueOf(notepad).fastReader(file.getPath());
+        notepad.bigEdit.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
         // if fastReader throws any exception
         if (status == -1) {
             System.err.println("[openNew] - File is null..");
@@ -108,27 +108,27 @@ public class OpenFile extends BIGNotepad {
                     JOptionPane.PLAIN_MESSAGE);
         }
         // add to recent files
-        if (pad.currentlyOpenedFile.getPath() != null) {
-            pad.currentPath = pad.currentlyOpenedFile.getPath();
+        if (notepad.currentlyOpenedFile.getPath() != null) {
+            notepad.currentPath = notepad.currentlyOpenedFile.getPath();
         }
-        Object[] recentFile = {pad.currentlyOpenedFile.getPath()};
-        RecentFiles.valueOf(pad).addRecentFileItems(recentFile);
-        pad.firstTimeOpen = true;
+        Object[] recentFile = {notepad.currentlyOpenedFile.getPath()};
+        RecentFiles.valueOf(notepad).addRecentFileItems(recentFile);
+        notepad.firstTimeOpen = true;
         // reset title
-        pad.documentIsModified = false;
-        TitleDisplayMode.valueOf(pad).setWindowTitleDisplay(windowTitleDisplayMode);
+        notepad.documentIsModified = false;
+        TitleDisplayMode.valueOf(notepad).setWindowTitleDisplay(windowTitleDisplayMode);
         // set cursor to start of document
-        pad.bigEdit.setCaretPosition(0);
+        notepad.bigEdit.setCaretPosition(0);
         // otherwise it will "undo" every line read by fastReader
-        pad.undoManager.discardAllEdits();
+        notepad.undoManager.discardAllEdits();
 
         // bring back the line numbers if they were displayed before
-        if (pad.displayLineNumMenuItem.isSelected()) {
-            pad.lineNumbersActive = true;
-            pad.editorScrollPane.setRowHeaderView(pad.lineNumbers);
+        if (notepad.displayLineNumMenuItem.isSelected()) {
+            notepad.lineNumbersActive = true;
+            notepad.editorScrollPane.setRowHeaderView(notepad.lineNumbers);
         } else {
-            pad.lineNumbersActive = false;
-            pad.editorScrollPane.setRowHeaderView(null);
+            notepad.lineNumbersActive = false;
+            notepad.editorScrollPane.setRowHeaderView(null);
         }
         return 0;
     }

@@ -11,6 +11,8 @@ import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 
 import config.TitleDisplayMode;
+import io.OpenFile;
+import io.SaveFile;
 
 /**
  * Right click menu.
@@ -58,6 +60,11 @@ public class QuickMenu {
 
 		displayQuickMenuGUI();
 	}
+	
+	protected void updateUndoMenuItems() {
+		quickUndo.setEnabled(notepad.undoManager.canUndo());
+		quickRedo.setEnabled(notepad.undoManager.canRedo());
+	}
 
 	private void initializeComponents() {
 		new QuickMenuComponents(notepad, this).initComponents();
@@ -70,7 +77,7 @@ public class QuickMenu {
 	void quickUndoActionPerformed(java.awt.event.ActionEvent evt) {
 		try {
 			notepad.undoManager.undo();
-			notepad.updateUndoMenuItems();
+			updateUndoMenuItems();
 		} catch (CannotUndoException cue) {
 			notepad.documentIsModified = notepad.undoManager.canUndo();
 			TitleDisplayMode.valueOf(notepad).setWindowTitleDisplay(notepad.windowTitleDisplayMode);
@@ -81,7 +88,7 @@ public class QuickMenu {
 	void quickRedoActionPerformed(java.awt.event.ActionEvent evt) {
 		try {
 			notepad.undoManager.redo();
-			notepad.updateUndoMenuItems();
+			updateUndoMenuItems();
 		} catch (CannotRedoException cre) {
 			System.err.println(cre);
 		}
@@ -127,6 +134,26 @@ public class QuickMenu {
 
 	void quickSelectAllActionPerformed(java.awt.event.ActionEvent evt) {
 		notepad.bigEdit.selectAll();
+	}
+	
+	void fileOpenMenuItemActionPerformed(java.awt.event.ActionEvent evt) {
+		OpenFile.valueOf(notepad).fileOpenNew();
+	}
+
+	void newFileIconMouseClicked(java.awt.event.MouseEvent evt) {
+		OpenFile.valueOf(notepad).fileOpenNew();
+	}
+
+	void openFileIconMouseClicked(java.awt.event.MouseEvent evt) {
+		OpenFile.valueOf(notepad).fileOpenNew();
+	}
+
+	void saveFileIconMouseClicked(java.awt.event.MouseEvent evt) {
+		SaveFile.valueOf(notepad).saveCurrentFile();
+	}
+
+	void findStringIconMouseClicked(java.awt.event.MouseEvent evt) {
+		findDialog.showDialog(notepad);
 	}
 
 }

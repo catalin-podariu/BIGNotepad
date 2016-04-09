@@ -40,8 +40,8 @@ public class Task extends SwingWorker<Void, Void> {
 			notepad.undoManager.addEdit(e.getEdit());
 			notepad.documentIsModified = notepad.undoManager.canUndo();
 			if (notepad.firstTimeOpen) {
-				notepad.firstTimeOpen = false;
 				notepad.documentIsModified = false;
+				notepad.firstTimeOpen = false;
 			}
 			TitleDisplayMode.valueOf(notepad).setWindowTitleDisplay(notepad.windowTitleDisplayMode);
 			notepad.updateUndoMenuItems();
