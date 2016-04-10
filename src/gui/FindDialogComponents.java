@@ -8,7 +8,8 @@ public class FindDialogComponents {
 		this.dialog = dialog;
 	}
 	
-	
-	
+	public void initComponents(){
+		
+	}
 	
 }

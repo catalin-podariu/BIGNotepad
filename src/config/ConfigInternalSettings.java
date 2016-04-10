@@ -5,11 +5,12 @@ package config;
  * @author catalin.podariu[at]gmail.com
  */
 import gui.BIGNotepad;
+import gui.MainMenu;
 
 public class ConfigInternalSettings {
 
 	private BIGNotepad notepad;
-
+	
 	private boolean isAlwaysOnTop;
 	private boolean isMinimizedToTray;
 	private boolean rememeberMainWindowSize, rememberRecentFiles, rememberRecentSearches;
@@ -22,7 +23,7 @@ public class ConfigInternalSettings {
 	}
 
 	protected boolean isAlwaysOnTop() {
-		notepad.settAlwaysOnTopMenuItem.setSelected(isAlwaysOnTop);
+		notepad.mainMenu.settAlwaysOnTopMenuItem.setSelected(isAlwaysOnTop);
 		return isAlwaysOnTop;
 	}
 
@@ -31,7 +32,7 @@ public class ConfigInternalSettings {
 	}
 
 	protected boolean isMinimizedToTray() {
-		notepad.setMinToTrayMenuItem.setSelected(isMinimizedToTray);
+		notepad.mainMenu.setMinToTrayMenuItem.setSelected(isMinimizedToTray);
 		return isMinimizedToTray;
 	}
 
@@ -40,7 +41,7 @@ public class ConfigInternalSettings {
 	}
 
 	protected boolean rememeberMainWindowSize() {
-		notepad.settingsMainWindowSizePosition.setSelected(rememeberMainWindowSize);
+		notepad.mainMenu.settingsMainWindowSizePosition.setSelected(rememeberMainWindowSize);
 		return rememeberMainWindowSize;
 	}
 
@@ -49,7 +50,7 @@ public class ConfigInternalSettings {
 	}
 
 	protected boolean rememberRecentFiles() {
-		notepad.settRecentFilesMenuItem.setSelected(rememberRecentFiles);
+		notepad.mainMenu.settRecentFilesMenuItem.setSelected(rememberRecentFiles);
 		return rememberRecentFiles;
 	}
 
@@ -58,7 +59,7 @@ public class ConfigInternalSettings {
 	}
 
 	protected boolean rememberRecentSearches() {
-		notepad.settRecentSearchMenuItem.setSelected(rememberRecentSearches);
+		notepad.mainMenu.settRecentSearchMenuItem.setSelected(rememberRecentSearches);
 		return rememberRecentSearches;
 	}
 
@@ -67,7 +68,7 @@ public class ConfigInternalSettings {
 	}
 
 	protected boolean saveSettingsOnExit() {
-		notepad.settSaveOnExitMenuItem.setSelected(saveSettingsOnExit);
+		notepad.mainMenu.settSaveOnExitMenuItem.setSelected(saveSettingsOnExit);
 		return saveSettingsOnExit;
 	}
 
@@ -76,7 +77,7 @@ public class ConfigInternalSettings {
 	}
 
 	protected boolean isWordWrapActive() {
-		notepad.viewWrapMenuItem.setSelected(wordWrapActive);
+		notepad.mainMenu.viewWrapMenuItem.setSelected(wordWrapActive);
 		return wordWrapActive;
 	}
 
@@ -85,7 +86,7 @@ public class ConfigInternalSettings {
 	}
 
 	protected boolean displaysLongLineMarker() {
-		notepad.viewLongLineMenuItem.setSelected(longLineMarkerActive);
+		notepad.mainMenu.viewLongLineMenuItem.setSelected(longLineMarkerActive);
 		return longLineMarkerActive;
 	}
 
@@ -94,7 +95,7 @@ public class ConfigInternalSettings {
 	}
 
 	protected boolean isStatusBarActive() {
-		notepad.viewStatusBarMenuItem.setSelected(notepad.displayStatusBar);
+		notepad.mainMenu.viewStatusBarMenuItem.setSelected(notepad.displayStatusBar);
 		return statusBarActive;
 	}
 
@@ -103,7 +104,7 @@ public class ConfigInternalSettings {
 	}
 
 	protected boolean isQuickMenuActive() {
-		notepad.viewQuickMMenuItem.setSelected(notepad.displayQuickMenu);
+		notepad.mainMenu.viewQuickMMenuItem.setSelected(notepad.displayQuickMenu);
 		return quickMenuActive;
 	}
 
@@ -112,7 +113,7 @@ public class ConfigInternalSettings {
 	}
 
 	protected boolean isLineNumbersActive() {
-		notepad.displayLineNumMenuItem.setSelected(lineNumbersActive);
+		notepad.mainMenu.displayLineNumMenuItem.setSelected(lineNumbersActive);
 		return lineNumbersActive;
 	}
 

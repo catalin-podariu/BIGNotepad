@@ -7,20 +7,21 @@ import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.StyledDocument;
 
-public class FindDialog {
+public class FindDialog extends JDialog {
 
 	private BIGNotepad notepad;
 	private StyledDocument document;
 	private JTextPane bigEdit;
-
-	private JDialog findDialog;
+	
+	private FindDialogComponents components;
 
 	private FindDialog(BIGNotepad notepad) {
 		this.notepad = notepad;
 		document = bigEdit.getStyledDocument();
 		bigEdit = notepad.bigEdit;
-
-		findDialog = new javax.swing.JDialog();
+		
+		components = new FindDialogComponents(this);
+		components.initComponents();
 	}
 
 	public static FindDialog create(BIGNotepad notepad) {
@@ -28,12 +29,12 @@ public class FindDialog {
 	}
 
 	public void showDialog(boolean status) {
-		findDialog.setVisible(status);
+		this.setVisible(status);
 	}
 
 	void findDialogComponentShown(java.awt.event.ComponentEvent evt) {
 		replaceDialog.dispose();
-		findDialog.setLocationRelativeTo(this);
+		notepad.findDialog.setLocationRelativeTo(this);
 		String noStringSelected = "";
 		addSelectedStringAsFindItem(findDSearchCombo, noStringSelected);
 	}
@@ -117,24 +118,18 @@ public class FindDialog {
 	void findDFindPrevActionPerformed(java.awt.event.ActionEvent evt) {
 
 	}
+	
+	public javax.swing.JButton findDClose;
+	public javax.swing.JButton findDFindNext;
+	public javax.swing.JButton findDFindPrev;
+	public javax.swing.JCheckBox findDMatchCase;
+	public javax.swing.JCheckBox findDMatchWord;
+	public javax.swing.JCheckBox findDMatchWordStart;
+	public javax.swing.JCheckBox findDRegex;
+	public javax.swing.JComboBox<Object> findDSearchCombo;
+	public javax.swing.JLabel findDSearchLabel;
+	public javax.swing.JCheckBox findDSelectedText;
+	public javax.swing.JLabel findGotoReplace;
 
-	javax.swing.JCheckBox highlightRSearchCombo;
-	javax.swing.JCheckBox highlightSearchCombo;
-	javax.swing.JCheckBox incrementalRSearchCombo;
-	javax.swing.JButton replaceDClose;
-	javax.swing.JButton replaceDFindNext;
-	javax.swing.JButton replaceDFindPrev;
-	javax.swing.JCheckBox replaceDMatchCase;
-	javax.swing.JCheckBox replaceDMatchWord;
-	javax.swing.JCheckBox replaceDMatchWordStart;
-	javax.swing.JCheckBox replaceDRegex;
-	javax.swing.JButton replaceDReplace;
-	javax.swing.JButton replaceDReplaceAll;
-	javax.swing.JComboBox<String> replaceDReplaceCombo;
-	javax.swing.JLabel replaceDReplaceLabel;
-	javax.swing.JComboBox<Object> replaceDSearchCombo;
-	javax.swing.JLabel replaceDSearchLabel;
-	javax.swing.JCheckBox replaceDSelectedText;
-	javax.swing.JDialog replaceDialog;
-	javax.swing.JLabel replaceGotoFind;
+	
 }

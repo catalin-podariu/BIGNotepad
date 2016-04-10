@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollBar;
 import javax.swing.text.BadLocationException;
@@ -45,9 +46,15 @@ public class BIGNotepad extends javax.swing.JFrame {
 		notepad.mainMenu = MainMenu.create(notepad);
 		return notepad;
 	}
+	
+	void initConfig() {
+		DefaultConfigOLD def = new DefaultConfigOLD(this);
+		def.loadDefaultSettings();
+	}
 
 	void formWindowOpened(java.awt.event.WindowEvent evt) {
-		// TODO catalin.podariu ?!
+		findDialog = FindDialog.create(this);
+		replaceDialog = ReplaceDialog.create(this);
 	}
 
 	void bigEditMouseClicked(java.awt.event.MouseEvent evt) {
@@ -196,10 +203,7 @@ public class BIGNotepad extends javax.swing.JFrame {
 		return stringValues;
 	}
 
-	void initConfig() {
-		DefaultConfigOLD def = new DefaultConfigOLD(this);
-		def.loadDefaultSettings();
-	}
+	
 
 	public static void main(String args[]) {
 		try {
@@ -221,6 +225,8 @@ public class BIGNotepad extends javax.swing.JFrame {
 	}
 
 	public MainMenu mainMenu;
+	public JDialog replaceDialog;
+	public JDialog findDialog;
 
 	public int currentSearchLocation;
 	public boolean searchWrapAround;
@@ -269,21 +275,9 @@ public class BIGNotepad extends javax.swing.JFrame {
 
 	public javax.swing.JTextPane bigEdit;
 
-	protected javax.swing.JLabel encodingStatusLabel;
-	protected javax.swing.JPanel encodingStatusPanel;
-	protected javax.swing.JScrollPane editorScrollPane;
-	javax.swing.JButton findDClose;
-	javax.swing.JButton findDFindNext;
-	javax.swing.JButton findDFindPrev;
-	public javax.swing.JCheckBox findDMatchCase;
-	public javax.swing.JCheckBox findDMatchWord;
-	public javax.swing.JCheckBox findDMatchWordStart;
-	public javax.swing.JCheckBox findDRegex;
-	public javax.swing.JComboBox<Object> findDSearchCombo;
-	javax.swing.JLabel findDSearchLabel;
-	public javax.swing.JCheckBox findDSelectedText;
-	javax.swing.JDialog findDialog;
-	javax.swing.JLabel findGotoReplace;
+	public javax.swing.JLabel encodingStatusLabel;
+	public javax.swing.JPanel encodingStatusPanel;
+	public javax.swing.JScrollPane editorScrollPane;
 
 	protected javax.swing.JLabel findStringIcon;
 
