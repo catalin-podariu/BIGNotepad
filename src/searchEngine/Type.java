@@ -5,18 +5,10 @@ public class Type {
 	public final int IGNORE_CASE = 1;
 	public final int IGNORE_CASE_WHOLE_WORD = 13;
 	public final int IGNORE_CASE_WORD_START = 14;
-	public final int IGNORE_CASE_SELECTION = 15;
-	
-	public final int IGNORE_CASE_WHOLE_WORD_SELECTION = 135;
-	public final int IGNORE_CASE_WORD_START_SELECTION = 145;
 
 	public final int MATCH_CASE = 2;
 	public final int MATCH_CASE_WHOLE_WORD = 23;
 	public final int MATCH_CASE_WORD_START = 24;
-	public final int MATCH_CASE_SELECTION = 25;
-
-	public final int MATCH_CASE_WHOLE_WORD_SELECTION = 235;
-	public final int MATCH_CASE_WORD_START_SELECTION = 245;
 
 	public final int REGEX = 6;
 	

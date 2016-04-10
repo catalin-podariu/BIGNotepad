@@ -19,5 +19,4 @@ public class MatchCase {
 			Feedback.valueOf(notepad).selectString(index, toFind.length());
 		}
 	}
-
 }

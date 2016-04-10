@@ -9,43 +9,31 @@ import javax.swing.JPanel;
 public class SearchModel {
 
 	private SearchModel() {
-
 	}
 
 	public static SearchModel valueOf() {
 		return new SearchModel();
 	}
 
-	// this is only reached if selectedCheckBoxes > 0
-	private void checkSelectedCheckBoxesValues() {
-		selectedBoxesValues = new LinkedList<>();
-		for (int index = 0; index < allCheckBoxesValues.size(); index++) {
-			int boxValue = allCheckBoxesValues.get(index);
-			if (boxValue == Type.get().IGNORE_CASE) {
-				selectedBoxesValues.add(boxValue);
-			}
-		}
-	}
-
-	private void getUserSelectedSearchMode(JPanel panel) {
-		allCheckBoxesValues = new LinkedList<>();
+	public void getUserSelectedSearchMode(JPanel panel) {
+		StringBuilder searchMode = new StringBuilder();
 		Component[] allComponentsInsidePanel = panel.getComponents();
 		for (Component item : allComponentsInsidePanel) {
 			if (item instanceof JCheckBox) {
 				if (((JCheckBox) item).isSelected()) {
-					allCheckBoxesValues.add(Integer.valueOf(item.getName()));
+					searchMode.append(item.getName());
 				}
 			}
 		}
-		if (allCheckBoxesValues.size() == 0) {
+		if (searchMode.length() == 0) {
 			goToDefaultSearchMode();
+		} else {
+			// TODO catalin.podariu searchMode.toString();
 		}
 	}
 
 	private void goToDefaultSearchMode() {
 		// TODO catalin.podariu default search, ignore case
+		
 	}
-
-	LinkedList<Integer> allCheckBoxesValues;
-	LinkedList<Integer> selectedBoxesValues;
 }
