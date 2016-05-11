@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<x:xmpmeta xmlns:x="adobe:ns:meta/">
+    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+        <rdf:Description rdf:about="" xmlns:xmp="http://ns.adobe.com/xap/1.0/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:ws="http://namespace.corel.com/workspace/metadata/1.0/" xmlns:xmpMM="http://ns.adobe.com/xap/1.0/mm/">
+            <xmp:CreateDate>2014-09-08T14:04:21Z</xmp:CreateDate>
+            <xmp:ModifyDate>2014-09-08T14:04:21Z</xmp:ModifyDate>
+            <xmp:MetadataDate>2014-09-08T14:04:21Z</xmp:MetadataDate>
+            <dc:format>application/x-vnd.corel.zcf.workspace+zip</dc:format>
+            <dc:title>
+                <rdf:Alt>
+                    <rdf:li xml:lang="x-default">Default</rdf:li>
+                    <rdf:li xml:lang="en">Default</rdf:li>
+                </rdf:Alt>
+            </dc:title>
+            <ws:Category>
+                <rdf:Alt />
+            </ws:Category>
+            <dc:description>
+                <rdf:Alt>
+                    <rdf:li xml:lang="x-default">The CorelDRAW X7 default workspace has been redesigned from the ground up to provide a more intuitive placement of tools and controls. This workspace is ideal for users who have experience with other vector graphics software, as well as users who are familiar with CorelDRAW.</rdf:li>
+                    <rdf:li xml:lang="en">The CorelDRAW X7 default workspace has been redesigned from the ground up to provide a more intuitive placement of tools and controls. This workspace is ideal for users who have experience with other vector graphics software, as well as users who are familiar with CorelDRAW.</rdf:li>
+                </rdf:Alt>
+            </dc:description>
+            <xmpMM:InstanceID>f84d9380-105c-4b97-a88d-5b1eaca492da</xmpMM:InstanceID>
+            <xmpMM:DocumentID>88c6adc9-342c-4d99-8403-0d46f54574f6</xmpMM:DocumentID>
+            <ws:UIOrder>400</ws:UIOrder>
+        </rdf:Description>
+    </rdf:RDF>
+</x:xmpmeta>

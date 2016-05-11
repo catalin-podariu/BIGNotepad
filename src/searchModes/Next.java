@@ -30,14 +30,24 @@ public class Next {
 			int endIndex = index + toFind.length();
 			String temp = document.getText(index, endIndex);
 
-			if (searchMode == Type.get().IGNORE_CASE_WHOLE_WORD) {
-				WholeWord.get(notepad).find(toFind, index, temp);
+			if (searchMode == Type.IGNORE_CASE_WHOLE_WORD.getValue()) {
+				Type.IGNORE_CASE_WHOLE_WORD.find(notepad, toFind, index, temp);
 
-			} else if (searchMode == Type.get().IGNORE_CASE_WORD_START) {
-				WordStart.get(notepad).find(toFind, index, temp);
+			} else if (searchMode == Type.IGNORE_CASE_WORD_START.getValue()) {
+				Type.IGNORE_CASE_WORD_START.find(notepad, toFind, index, temp);
 
-			} else if (searchMode == Type.get().IGNORE_CASE) {
-				IgnoreCase.get(notepad).find(toFind, endIndex, temp);
+			} else if (searchMode == Type.IGNORE_CASE.getValue()) {
+				Type.IGNORE_CASE.find(notepad, toFind, index, temp);
+			}
+			
+			if (searchMode == Type.MATCH_CASE_WHOLE_WORD.getValue()) {
+				Type.MATCH_CASE_WHOLE_WORD.find(notepad, toFind, index, temp);
+
+			} else if (searchMode == Type.MATCH_CASE_WORD_START.getValue()) {
+				Type.MATCH_CASE_WORD_START.find(notepad, toFind, index, temp);
+
+			} else if (searchMode == Type.MATCH_CASE.getValue()) {
+				Type.MATCH_CASE.find(notepad, toFind, index, temp);
 			}
 
 			if (notepad.currentSearchLocation == document.getLength()) {
