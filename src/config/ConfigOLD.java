@@ -9,12 +9,21 @@ import java.io.InputStream;
 import java.util.Properties;
 import javax.swing.JOptionPane;
 
+import gui.BIGNotepad;
+
 /**
  *
  * @author catalin.podariu[at]gmail.com
  */
 public class ConfigOLD {
 
+	private String defaultSettings;
+	private String aboutInfo;
+
+	private String userDefinedSettings;
+
+	private Properties properties;
+	
 	public ConfigOLD(String userDefinedSettings) {
 		this.properties = new Properties();
 		this.userDefinedSettings = userDefinedSettings;
@@ -29,11 +38,11 @@ public class ConfigOLD {
 				if (fileInput != null) {
 					properties.load(fileInput);
 				}
-				if (fileInput == null) {
+				if (properties.size() == 0) {
 					int status = failSafe();
 					if (status == -1) {
 						JOptionPane.showConfirmDialog(null, //
-								"Properties were NOT loaded..", "BIGNotepad message",
+								"Properties were NOT loaded..", "BIGNotepad message", //
 								JOptionPane.PLAIN_MESSAGE);
 					}
 					get(type);
@@ -79,6 +88,7 @@ public class ConfigOLD {
 		return null;
 	}
 
+	private ConfigInternalSettings config = new ConfigInternalSettings(new BIGNotepad());
 	private Object[] getDefaultSettings(String type) {
 		Object[] props = null;
 		switch (type) {
@@ -93,17 +103,17 @@ public class ConfigOLD {
 			break;
 		case "InternalSettings":
 			props = new String[11];
-			props[0] = properties.getProperty("alwaysOnTop");
-			props[1] = properties.getProperty("minimizeToTray");
-			props[2] = properties.getProperty("rememeberWinSize");
-			props[3] = properties.getProperty("rememberRecentFiles");
-			props[4] = properties.getProperty("rememberRecentSearches");
-			props[5] = properties.getProperty("saveSettingsOnExit");
-			props[6] = properties.getProperty("wordWrap");
-			props[7] = properties.getProperty("displayLongLineMarker");
-			props[8] = properties.getProperty("displayStatusBar");
-			props[9] = properties.getProperty("displayQuickMenu");
-			props[10] = properties.getProperty("displayLineNumbers");
+			config.setAlwaysOnTop(Boolean.valueOf(properties.getProperty("alwaysOnTop")));
+			config.setMinimizedToTray(Boolean.valueOf(properties.getProperty("minimizeToTray")));
+			config.setRememeberWinSize(Boolean.valueOf(properties.getProperty("rememeberWinSize")));
+			config.setRememberRecentFiles(Boolean.valueOf(properties.getProperty("rememberRecentFiles")));
+			config.setRememberRecentSearches(Boolean.valueOf(properties.getProperty("rememberRecentSearches")));
+			config.setSaveSettingsOnExit(Boolean.valueOf(properties.getProperty("saveSettingsOnExit")));
+			config.setWordWrapActive(Boolean.valueOf(properties.getProperty("wordWrap")));
+			config.setDisplaysLongLineMarker(Boolean.valueOf(properties.getProperty("displayLongLineMarker")));
+			config.setDisplaysStatusBar(Boolean.valueOf(properties.getProperty("displayStatusBar")));
+			config.setDisplaysQuickMenu(Boolean.valueOf(properties.getProperty("displayQuickMenu")));
+			config.setDisplaysLineNumbers(Boolean.valueOf(properties.getProperty("displayLineNumbers")));
 			break;
 		case "RecentFiles":
 			props = new Object[10];
@@ -230,16 +240,14 @@ public class ConfigOLD {
 				FileOutputStream outputStream = new FileOutputStream(userSettings)) {
 			if (inputStream == null) {
 				JOptionPane.showConfirmDialog(null, defaultSettings //
-						+ "\ninputStream == null", "BIGNotepad message",
-						JOptionPane.PLAIN_MESSAGE);
+						+ "\ninputStream == null", "BIGNotepad message", JOptionPane.PLAIN_MESSAGE);
 				return -1;
 			}
 			byte[] buffer = new byte[inputStream.available()];
 			inputStream.read(buffer);
 			outputStream.write(buffer);
-			JOptionPane.showConfirmDialog(
-					null, "Your preferences were not found..\n"
-							+ "A fresh copy of default settings is now available at\n" //
+			JOptionPane.showConfirmDialog(null,
+					"Your preferences were not found..\n" + "A fresh copy of default settings is now available at\n" //
 							+ userDefinedSettings,
 					"BIGNotepad message", JOptionPane.PLAIN_MESSAGE);
 			return 0;
@@ -281,12 +289,5 @@ public class ConfigOLD {
 
 		return props;
 	}
-
-	private String defaultSettings;
-	private String aboutInfo;
-
-	private String userDefinedSettings;
-
-	private Properties properties;
 
 }

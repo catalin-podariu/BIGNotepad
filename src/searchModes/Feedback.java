@@ -6,6 +6,11 @@ import javax.swing.text.StyledDocument;
 
 import gui.BIGNotepad;
 
+
+/**
+ *
+ * @author catalin.podariu[at]gmail.com
+ */
 public class Feedback {
 
 	private BIGNotepad notepad;

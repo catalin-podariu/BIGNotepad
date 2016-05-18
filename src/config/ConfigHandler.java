@@ -5,6 +5,9 @@ import java.util.Properties;
 import gui.BIGNotepad;
 
 public class ConfigHandler {
+
+	private Properties properties;
+	private BIGNotepad notepad;
 	
 	private ConfigHandler(BIGNotepad notepad){
 		this.notepad = notepad;
@@ -19,9 +22,4 @@ public class ConfigHandler {
 	public void configInit(){
 		// TODO catalin.podariu find/set default folders & ideOrJar
 	}
-	
-	
-
-	private Properties properties;
-	private BIGNotepad notepad;
 }

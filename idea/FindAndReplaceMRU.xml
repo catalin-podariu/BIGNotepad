@@ -1,5 +1,22 @@
 <?xml version="1.0"?>
 <FindAndReplaceMRUs matchCase="true" matchWholeWord="true">
-	<Find><Entry word="2DO"/><Entry word="OP"/><Entry word="2014"/><Entry word="XIII-a"/><Entry word="respective"/><Entry word="si"/><Entry word="Si"/><Entry word="ș"/><Entry word="s"/></Find>
-	<Replace><Entry word="___________________"/><Entry word="2015"/><Entry word="XIV-a"/><Entry word="si"/><Entry word="şi"/><Entry word="0x015F"/></Replace>
+	<Find>
+		<Entry word="2DO" />
+		<Entry word="OP" />
+		<Entry word="2014" />
+		<Entry word="XIII-a" />
+		<Entry word="respective" />
+		<Entry word="si" />
+		<Entry word="Si" />
+		<Entry word="ș" />
+		<Entry word="s" />
+	</Find>
+	<Replace>
+		<Entry word="___________________" />
+		<Entry word="2015" />
+		<Entry word="XIV-a" />
+		<Entry word="si" />
+		<Entry word="şi" />
+		<Entry word="0x015F" />
+	</Replace>
 </FindAndReplaceMRUs>

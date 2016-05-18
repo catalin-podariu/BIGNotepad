@@ -6,6 +6,10 @@ import java.util.LinkedList;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 
+/**
+*
+* @author catalin.podariu[at]gmail.com
+*/
 public class SearchModel {
 
 	private SearchModel() {

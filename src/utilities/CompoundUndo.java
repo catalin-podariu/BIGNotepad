@@ -136,22 +136,22 @@ public class CompoundUndo extends UndoManager
         return compoundEdit;
     }
 
-//    /*
-//     *  The Action to Undo changes to the Document.
-//     *  The state of the Action is managed by the CompoundUndo
-//     */
-//    public Action getUndoAction() {
-//        return undoAction;
-//    }
-//
-//    /*
-//     *  The Action to Redo changes to the Document.
-//     *  The state of the Action is managed by the CompoundUndo
-//     */
-//    public Action getRedoAction() {
-//        return redoAction;
-//    }
-//
+    /*
+     *  The Action to Undo changes to the Document.
+     *  The state of the Action is managed by the CompoundUndo
+     */
+    public Action getUndoAction() {
+        return undoAction;
+    }
+
+    /*
+     *  The Action to Redo changes to the Document.
+     *  The state of the Action is managed by the CompoundUndo
+     */
+    public Action getRedoAction() {
+        return redoAction;
+    }
+
 //  Implement DocumentListener
 //
     /*

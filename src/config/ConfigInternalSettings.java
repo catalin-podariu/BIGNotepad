@@ -1,16 +1,16 @@
 package config;
 
+import gui.BIGNotepad;
+import gui.MainMenu;
+
 /**
  * 
  * @author catalin.podariu[at]gmail.com
  */
-import gui.BIGNotepad;
-import gui.MainMenu;
-
 public class ConfigInternalSettings {
 
 	private BIGNotepad notepad;
-	
+
 	private boolean isAlwaysOnTop;
 	private boolean isMinimizedToTray;
 	private boolean rememeberMainWindowSize, rememberRecentFiles, rememberRecentSearches;
